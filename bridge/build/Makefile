@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/work/bridge
+CMAKE_SOURCE_DIR = /root/service/bridge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/work/bridge/build
+CMAKE_BINARY_DIR = /root/service/bridge/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -79,6 +79,17 @@ install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # Special rule for the target install
 install: preinstall
@@ -113,22 +124,11 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/work/bridge/build/CMakeFiles /root/work/bridge/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/service/bridge/build/CMakeFiles /root/service/bridge/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/work/bridge/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/service/bridge/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -157,61 +157,196 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named box2d
+# Target rules for targets named b2d
 
 # Build rule for target.
-box2d: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 box2d
-.PHONY : box2d
+b2d: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 b2d
+.PHONY : b2d
 
 # fast build rule for target.
-box2d/fast:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/build
-.PHONY : box2d/fast
+b2d/fast:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/build
+.PHONY : b2d/fast
+
+# target to build an object file
+src/lua_b2_block_allocator.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_block_allocator.o
+.PHONY : src/lua_b2_block_allocator.o
+
+# target to preprocess a source file
+src/lua_b2_block_allocator.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_block_allocator.i
+.PHONY : src/lua_b2_block_allocator.i
+
+# target to generate assembly for a file
+src/lua_b2_block_allocator.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_block_allocator.s
+.PHONY : src/lua_b2_block_allocator.s
+
+# target to build an object file
+src/lua_b2_body.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_body.o
+.PHONY : src/lua_b2_body.o
+
+# target to preprocess a source file
+src/lua_b2_body.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_body.i
+.PHONY : src/lua_b2_body.i
+
+# target to generate assembly for a file
+src/lua_b2_body.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_body.s
+.PHONY : src/lua_b2_body.s
+
+# target to build an object file
+src/lua_b2_broad_phase.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_broad_phase.o
+.PHONY : src/lua_b2_broad_phase.o
+
+# target to preprocess a source file
+src/lua_b2_broad_phase.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_broad_phase.i
+.PHONY : src/lua_b2_broad_phase.i
+
+# target to generate assembly for a file
+src/lua_b2_broad_phase.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_broad_phase.s
+.PHONY : src/lua_b2_broad_phase.s
+
+# target to build an object file
+src/lua_b2_chain_shape.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_chain_shape.o
+.PHONY : src/lua_b2_chain_shape.o
+
+# target to preprocess a source file
+src/lua_b2_chain_shape.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_chain_shape.i
+.PHONY : src/lua_b2_chain_shape.i
+
+# target to generate assembly for a file
+src/lua_b2_chain_shape.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_chain_shape.s
+.PHONY : src/lua_b2_chain_shape.s
+
+# target to build an object file
+src/lua_b2_circle_shape.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_circle_shape.o
+.PHONY : src/lua_b2_circle_shape.o
+
+# target to preprocess a source file
+src/lua_b2_circle_shape.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_circle_shape.i
+.PHONY : src/lua_b2_circle_shape.i
+
+# target to generate assembly for a file
+src/lua_b2_circle_shape.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_circle_shape.s
+.PHONY : src/lua_b2_circle_shape.s
+
+# target to build an object file
+src/lua_b2_edge_shape.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_edge_shape.o
+.PHONY : src/lua_b2_edge_shape.o
+
+# target to preprocess a source file
+src/lua_b2_edge_shape.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_edge_shape.i
+.PHONY : src/lua_b2_edge_shape.i
+
+# target to generate assembly for a file
+src/lua_b2_edge_shape.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_edge_shape.s
+.PHONY : src/lua_b2_edge_shape.s
+
+# target to build an object file
+src/lua_b2_fixture.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_fixture.o
+.PHONY : src/lua_b2_fixture.o
+
+# target to preprocess a source file
+src/lua_b2_fixture.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_fixture.i
+.PHONY : src/lua_b2_fixture.i
+
+# target to generate assembly for a file
+src/lua_b2_fixture.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_fixture.s
+.PHONY : src/lua_b2_fixture.s
 
 # target to build an object file
 src/lua_b2_math.o:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_math.o
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_math.o
 .PHONY : src/lua_b2_math.o
 
 # target to preprocess a source file
 src/lua_b2_math.i:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_math.i
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_math.i
 .PHONY : src/lua_b2_math.i
 
 # target to generate assembly for a file
 src/lua_b2_math.s:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_math.s
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_math.s
 .PHONY : src/lua_b2_math.s
 
 # target to build an object file
+src/lua_b2_polygon_shape.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_polygon_shape.o
+.PHONY : src/lua_b2_polygon_shape.o
+
+# target to preprocess a source file
+src/lua_b2_polygon_shape.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_polygon_shape.i
+.PHONY : src/lua_b2_polygon_shape.i
+
+# target to generate assembly for a file
+src/lua_b2_polygon_shape.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_polygon_shape.s
+.PHONY : src/lua_b2_polygon_shape.s
+
+# target to build an object file
+src/lua_b2_shape.o:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_shape.o
+.PHONY : src/lua_b2_shape.o
+
+# target to preprocess a source file
+src/lua_b2_shape.i:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_shape.i
+.PHONY : src/lua_b2_shape.i
+
+# target to generate assembly for a file
+src/lua_b2_shape.s:
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_shape.s
+.PHONY : src/lua_b2_shape.s
+
+# target to build an object file
 src/lua_b2_world.o:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_world.o
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_world.o
 .PHONY : src/lua_b2_world.o
 
 # target to preprocess a source file
 src/lua_b2_world.i:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_world.i
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_world.i
 .PHONY : src/lua_b2_world.i
 
 # target to generate assembly for a file
 src/lua_b2_world.s:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/lua_b2_world.s
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/lua_b2_world.s
 .PHONY : src/lua_b2_world.s
 
 # target to build an object file
 src/main.o:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/main.o
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/main.o
 .PHONY : src/main.o
 
 # target to preprocess a source file
 src/main.i:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/main.i
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/main.i
 .PHONY : src/main.i
 
 # target to generate assembly for a file
 src/main.s:
-	$(MAKE) -f CMakeFiles/box2d.dir/build.make CMakeFiles/box2d.dir/src/main.s
+	$(MAKE) -f CMakeFiles/b2d.dir/build.make CMakeFiles/b2d.dir/src/main.s
 .PHONY : src/main.s
 
 # Help Target
@@ -222,14 +357,41 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... box2d"
+	@echo "... b2d"
+	@echo "... src/lua_b2_block_allocator.o"
+	@echo "... src/lua_b2_block_allocator.i"
+	@echo "... src/lua_b2_block_allocator.s"
+	@echo "... src/lua_b2_body.o"
+	@echo "... src/lua_b2_body.i"
+	@echo "... src/lua_b2_body.s"
+	@echo "... src/lua_b2_broad_phase.o"
+	@echo "... src/lua_b2_broad_phase.i"
+	@echo "... src/lua_b2_broad_phase.s"
+	@echo "... src/lua_b2_chain_shape.o"
+	@echo "... src/lua_b2_chain_shape.i"
+	@echo "... src/lua_b2_chain_shape.s"
+	@echo "... src/lua_b2_circle_shape.o"
+	@echo "... src/lua_b2_circle_shape.i"
+	@echo "... src/lua_b2_circle_shape.s"
+	@echo "... src/lua_b2_edge_shape.o"
+	@echo "... src/lua_b2_edge_shape.i"
+	@echo "... src/lua_b2_edge_shape.s"
+	@echo "... src/lua_b2_fixture.o"
+	@echo "... src/lua_b2_fixture.i"
+	@echo "... src/lua_b2_fixture.s"
 	@echo "... src/lua_b2_math.o"
 	@echo "... src/lua_b2_math.i"
 	@echo "... src/lua_b2_math.s"
+	@echo "... src/lua_b2_polygon_shape.o"
+	@echo "... src/lua_b2_polygon_shape.i"
+	@echo "... src/lua_b2_polygon_shape.s"
+	@echo "... src/lua_b2_shape.o"
+	@echo "... src/lua_b2_shape.i"
+	@echo "... src/lua_b2_shape.s"
 	@echo "... src/lua_b2_world.o"
 	@echo "... src/lua_b2_world.i"
 	@echo "... src/lua_b2_world.s"

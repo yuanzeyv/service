@@ -1,1 +1,1 @@
-/root/work/Service/scripts/luaclib/libbox2d.so
+/root/work/Service/scripts/luaclib/libb2d.so

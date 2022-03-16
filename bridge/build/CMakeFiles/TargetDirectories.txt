@@ -1,7 +1,7 @@
-/root/work/bridge/build/CMakeFiles/install/strip.dir
-/root/work/bridge/build/CMakeFiles/install/local.dir
-/root/work/bridge/build/CMakeFiles/install.dir
-/root/work/bridge/build/CMakeFiles/list_install_components.dir
-/root/work/bridge/build/CMakeFiles/rebuild_cache.dir
-/root/work/bridge/build/CMakeFiles/edit_cache.dir
-/root/work/bridge/build/CMakeFiles/box2d.dir
+/root/service/bridge/build/CMakeFiles/install/strip.dir
+/root/service/bridge/build/CMakeFiles/install/local.dir
+/root/service/bridge/build/CMakeFiles/edit_cache.dir
+/root/service/bridge/build/CMakeFiles/install.dir
+/root/service/bridge/build/CMakeFiles/list_install_components.dir
+/root/service/bridge/build/CMakeFiles/rebuild_cache.dir
+/root/service/bridge/build/CMakeFiles/b2d.dir

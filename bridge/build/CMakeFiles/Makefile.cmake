@@ -116,5 +116,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/box2d.dir/DependInfo.cmake"
+  "CMakeFiles/b2d.dir/DependInfo.cmake"
   )
