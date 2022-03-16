@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/root/work/sol2/build/CMakeFiles/LUA_VANILLA"
+		},
+		{
+			"file" : "/root/work/sol2/build/CMakeFiles/LUA_VANILLA.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/CMakeFiles/LUA_VANILLA-complete.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-install.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-mkdir.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-download.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-update.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-patch.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-configure.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-build.rule"
+		},
+		{
+			"file" : "/root/work/sol2/build/vendor/lua-5.3.5-stamp/LUA_VANILLA-test.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"LUA_VANILLA"
+		],
+		"name" : "LUA_VANILLA"
+	}
+}

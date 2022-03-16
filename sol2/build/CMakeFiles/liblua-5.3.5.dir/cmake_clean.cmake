@@ -1,0 +1,42 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lapi.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lauxlib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lbaselib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lbitlib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lcode.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lcorolib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lctype.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ldblib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ldebug.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ldo.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ldump.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lfunc.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lgc.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/linit.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/liolib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/llex.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lmathlib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lmem.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/loadlib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lobject.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lopcodes.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/loslib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lparser.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lstate.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lstring.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lstrlib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ltable.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ltablib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/ltm.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lundump.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lutf8lib.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lvm.c.o"
+  "CMakeFiles/liblua-5.3.5.dir/vendor/lua-5.3.5/src/lzio.c.o"
+  "x64/bin/liblua-5.3.5.pdb"
+  "x64/bin/liblua-5.3.5.so"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/liblua-5.3.5.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

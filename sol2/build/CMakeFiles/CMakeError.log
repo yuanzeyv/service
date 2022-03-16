@@ -1,0 +1,272 @@
+Performing C SOURCE FILE Test C_CHECK_FLAG_EXTRA_CONSTEXPR_DEPTH failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_846dd/fast && /usr/bin/make -f CMakeFiles/cmTC_846dd.dir/build.make CMakeFiles/cmTC_846dd.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_846dd.dir/src.c.o
+/usr/bin/cc   -DC_CHECK_FLAG_EXTRA_CONSTEXPR_DEPTH   -fconstexpr-depth=2147483647 -std=gnu11 -o CMakeFiles/cmTC_846dd.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc1: warning: command line option '-fconstexpr-depth=2147483647' is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_846dd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_846dd.dir/link.txt --verbose=1
+/usr/bin/cc  -DC_CHECK_FLAG_EXTRA_CONSTEXPR_DEPTH    CMakeFiles/cmTC_846dd.dir/src.c.o  -o cmTC_846dd 
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_CHECK_FLAG_EXTRA_CONSTEXPR_STEPS failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_73532/fast && /usr/bin/make -f CMakeFiles/cmTC_73532.dir/build.make CMakeFiles/cmTC_73532.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_73532.dir/src.c.o
+/usr/bin/cc   -DC_CHECK_FLAG_EXTRA_CONSTEXPR_STEPS   -fconstexpr-ops-limit=2147483647 -std=gnu11 -o CMakeFiles/cmTC_73532.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc1: warning: command line option '-fconstexpr-ops-limit=2147483647' is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_73532
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_73532.dir/link.txt --verbose=1
+/usr/bin/cc  -DC_CHECK_FLAG_EXTRA_CONSTEXPR_STEPS    CMakeFiles/cmTC_73532.dir/src.c.o  -o cmTC_73532 
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_CHECK_FLAG_TEMPLATE_DEBUGGING_MODE failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2b287/fast && /usr/bin/make -f CMakeFiles/cmTC_2b287.dir/build.make CMakeFiles/cmTC_2b287.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2b287.dir/src.c.o
+/usr/bin/cc   -DC_CHECK_FLAG_TEMPLATE_DEBUGGING_MODE   -ftemplate-backtrace-limit=0 -std=gnu11 -o CMakeFiles/cmTC_2b287.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc1: warning: command line option '-ftemplate-backtrace-limit=0' is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_2b287
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2b287.dir/link.txt --verbose=1
+/usr/bin/cc  -DC_CHECK_FLAG_TEMPLATE_DEBUGGING_MODE    CMakeFiles/cmTC_2b287.dir/src.c.o  -o cmTC_2b287 
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_CHECK_FLAG_BIG_OBJ failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_85a4b/fast && /usr/bin/make -f CMakeFiles/cmTC_85a4b.dir/build.make CMakeFiles/cmTC_85a4b.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_85a4b.dir/src.cxx.o
+/usr/bin/c++    -DCXX_CHECK_FLAG_BIG_OBJ   big-obj -std=gnu++17 -o CMakeFiles/cmTC_85a4b.dir/src.cxx.o -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: big-obj: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_85a4b.dir/build.make:66: CMakeFiles/cmTC_85a4b.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_85a4b/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_CHECK_FLAG_BIG_OBJ failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_95332/fast && /usr/bin/make -f CMakeFiles/cmTC_95332.dir/build.make CMakeFiles/cmTC_95332.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_95332.dir/src.c.o
+/usr/bin/cc   -DC_CHECK_FLAG_BIG_OBJ   big-obj -std=gnu11 -o CMakeFiles/cmTC_95332.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc: error: big-obj: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_95332.dir/build.make:66: CMakeFiles/cmTC_95332.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_95332/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_DIAGNOSTIC_UNKNOWN_WARNING failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_bade7/fast && /usr/bin/make -f CMakeFiles/cmTC_bade7.dir/build.make CMakeFiles/cmTC_bade7.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bade7.dir/src.cxx.o
+/usr/bin/c++    -DCXX_DIAGNOSTIC_UNKNOWN_WARNING   -Wunknown-warning -std=gnu++17 -o CMakeFiles/cmTC_bade7.dir/src.cxx.o -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wunknown-warning'
+make[1]: *** [CMakeFiles/cmTC_bade7.dir/build.make:66: CMakeFiles/cmTC_bade7.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_bade7/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_DIAGNOSTIC_UNKNOWN_WARNING failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8d019/fast && /usr/bin/make -f CMakeFiles/cmTC_8d019.dir/build.make CMakeFiles/cmTC_8d019.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8d019.dir/src.c.o
+/usr/bin/cc   -DC_DIAGNOSTIC_UNKNOWN_WARNING   -Wunknown-warning -std=gnu11 -o CMakeFiles/cmTC_8d019.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wunknown-warning'
+make[1]: *** [CMakeFiles/cmTC_8d019.dir/build.make:66: CMakeFiles/cmTC_8d019.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_8d019/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_DIAGNOSTIC_UNKNOWN_WARNING_OPTION failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e62c6/fast && /usr/bin/make -f CMakeFiles/cmTC_e62c6.dir/build.make CMakeFiles/cmTC_e62c6.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e62c6.dir/src.cxx.o
+/usr/bin/c++    -DCXX_DIAGNOSTIC_UNKNOWN_WARNING_OPTION   -Wunknown-warning-option -std=gnu++17 -o CMakeFiles/cmTC_e62c6.dir/src.cxx.o -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wunknown-warning-option'
+make[1]: *** [CMakeFiles/cmTC_e62c6.dir/build.make:66: CMakeFiles/cmTC_e62c6.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_e62c6/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_DIAGNOSTIC_UNKNOWN_WARNING_OPTION failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_39453/fast && /usr/bin/make -f CMakeFiles/cmTC_39453.dir/build.make CMakeFiles/cmTC_39453.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_39453.dir/src.c.o
+/usr/bin/cc   -DC_DIAGNOSTIC_UNKNOWN_WARNING_OPTION   -Wunknown-warning-option -std=gnu11 -o CMakeFiles/cmTC_39453.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wunknown-warning-option'
+make[1]: *** [CMakeFiles/cmTC_39453.dir/build.make:66: CMakeFiles/cmTC_39453.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_39453/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_DIAGNOSTIC_MICROSOFT_CAST failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_91233/fast && /usr/bin/make -f CMakeFiles/cmTC_91233.dir/build.make CMakeFiles/cmTC_91233.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_91233.dir/src.cxx.o
+/usr/bin/c++    -DCXX_DIAGNOSTIC_MICROSOFT_CAST   -Wmicrosoft-cast -std=gnu++17 -o CMakeFiles/cmTC_91233.dir/src.cxx.o -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wmicrosoft-cast'
+make[1]: *** [CMakeFiles/cmTC_91233.dir/build.make:66: CMakeFiles/cmTC_91233.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_91233/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_DIAGNOSTIC_MICROSOFT_CAST failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_045b5/fast && /usr/bin/make -f CMakeFiles/cmTC_045b5.dir/build.make CMakeFiles/cmTC_045b5.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_045b5.dir/src.c.o
+/usr/bin/cc   -DC_DIAGNOSTIC_MICROSOFT_CAST   -Wmicrosoft-cast -std=gnu11 -o CMakeFiles/cmTC_045b5.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wmicrosoft-cast'
+make[1]: *** [CMakeFiles/cmTC_045b5.dir/build.make:66: CMakeFiles/cmTC_045b5.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_045b5/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_DIAGNOSTIC_NOEXCEPT_TYPE failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2d7df/fast && /usr/bin/make -f CMakeFiles/cmTC_2d7df.dir/build.make CMakeFiles/cmTC_2d7df.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2d7df.dir/src.c.o
+/usr/bin/cc   -DC_DIAGNOSTIC_NOEXCEPT_TYPE   -Wnoexcept-type -std=gnu11 -o CMakeFiles/cmTC_2d7df.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc1: warning: command line option '-Wnoexcept-type' is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_2d7df
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2d7df.dir/link.txt --verbose=1
+/usr/bin/cc  -DC_DIAGNOSTIC_NOEXCEPT_TYPE    CMakeFiles/cmTC_2d7df.dir/src.c.o  -o cmTC_2d7df 
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_DIAGNOSTIC_PADDING_FROM_ALIGNMENT failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_99456/fast && /usr/bin/make -f CMakeFiles/cmTC_99456.dir/build.make CMakeFiles/cmTC_99456.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_99456.dir/src.cxx.o
+/usr/bin/c++    -DCXX_DIAGNOSTIC_PADDING_FROM_ALIGNMENT   -Wpadding-from-alignment -std=gnu++17 -o CMakeFiles/cmTC_99456.dir/src.cxx.o -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wpadding-from-alignment'
+make[1]: *** [CMakeFiles/cmTC_99456.dir/build.make:66: CMakeFiles/cmTC_99456.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_99456/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_DIAGNOSTIC_PADDING_FROM_ALIGNMENT failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_01387/fast && /usr/bin/make -f CMakeFiles/cmTC_01387.dir/build.make CMakeFiles/cmTC_01387.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_01387.dir/src.c.o
+/usr/bin/cc   -DC_DIAGNOSTIC_PADDING_FROM_ALIGNMENT   -Wpadding-from-alignment -std=gnu11 -o CMakeFiles/cmTC_01387.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wpadding-from-alignment'
+make[1]: *** [CMakeFiles/cmTC_01387.dir/build.make:66: CMakeFiles/cmTC_01387.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_01387/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_25183/fast && /usr/bin/make -f CMakeFiles/cmTC_25183.dir/build.make CMakeFiles/cmTC_25183.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_25183.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -std=gnu11 -o CMakeFiles/cmTC_25183.dir/src.c.o   -c /root/work/sol2/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_25183
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25183.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_25183.dir/src.c.o  -o cmTC_25183 
+/usr/bin/ld: CMakeFiles/cmTC_25183.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_25183.dir/build.make:87: cmTC_25183] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_25183/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /root/work/sol2/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e3a46/fast && /usr/bin/make -f CMakeFiles/cmTC_e3a46.dir/build.make CMakeFiles/cmTC_e3a46.dir/build
+make[1]: Entering directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e3a46.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu11 -o CMakeFiles/cmTC_e3a46.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e3a46
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e3a46.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_e3a46.dir/CheckFunctionExists.c.o  -o cmTC_e3a46  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_e3a46.dir/build.make:87: cmTC_e3a46] Error 1
+make[1]: Leaving directory '/root/work/sol2/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_e3a46/fast] Error 2
+
+
+
