@@ -1,1 +1,0 @@
-/root/work/Service/scripts/luaclib/libb2d.so
