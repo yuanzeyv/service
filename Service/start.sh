@@ -1,0 +1,1 @@
+./skynet/skynet ./launch/node$1.config
