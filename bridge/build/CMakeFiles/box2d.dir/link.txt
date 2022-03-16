@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -std=c++17  -shared -Wl,-soname,libbox2d.so -o libbox2d.so CMakeFiles/box2d.dir/src/lua_b2_math.o CMakeFiles/box2d.dir/src/lua_b2_world.o CMakeFiles/box2d.dir/src/main.o 
