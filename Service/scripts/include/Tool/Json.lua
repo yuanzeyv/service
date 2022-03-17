@@ -6,10 +6,7 @@ _instance = true
 require "Tool.Class"
 require "Tool.Tool"
 Json = class("Json")   
-local CJson = require "cjson"
-function Json:ctor() 
-  self._json = CJson
-end 
+local CJson = require "cjson"  
 
 function Json:Decode(str)  
     local ret,table =  Tool.Instance():Xpcall(CJson.decode,str)

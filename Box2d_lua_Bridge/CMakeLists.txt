@@ -23,4 +23,4 @@ target_link_libraries(
     b2d 
     libbox2d.a
 )  
-install(TARGETS b2d LIBRARY DESTINATION /root/work/Service/scripts/luaclib/)
+install(TARGETS b2d LIBRARY DESTINATION /root/service/Service/scripts/luaclib/)

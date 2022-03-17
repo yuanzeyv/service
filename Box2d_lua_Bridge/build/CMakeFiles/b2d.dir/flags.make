@@ -6,5 +6,5 @@ CXX_FLAGS = -std=c++17 -fPIC
 
 CXX_DEFINES = -Db2d_EXPORTS
 
-CXX_INCLUDES = -I/root/service/bridge/./include -I/root/service/bridge/./include/Lua_box2d 
+CXX_INCLUDES = -I/root/service/Box2d_lua_Bridge/./include -I/root/service/Box2d_lua_Bridge/./include/Lua_box2d 
 

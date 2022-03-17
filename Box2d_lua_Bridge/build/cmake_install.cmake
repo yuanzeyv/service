@@ -1,4 +1,4 @@
-# Install script for directory: /root/service/bridge
+# Install script for directory: /root/service/Box2d_lua_Bridge
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,29 +38,29 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so")
+  if(EXISTS "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so"
+         FILE "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/root/work/Service/scripts/luaclib/libb2d.so")
+   "/root/service/Service/scripts/luaclib/libb2d.so")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/root/work/Service/scripts/luaclib" TYPE SHARED_LIBRARY FILES "/root/service/bridge/build/libb2d.so")
-  if(EXISTS "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so")
+file(INSTALL DESTINATION "/root/service/Service/scripts/luaclib" TYPE SHARED_LIBRARY FILES "/root/service/Box2d_lua_Bridge/build/libb2d.so")
+  if(EXISTS "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so"
+         FILE "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so"
          OLD_RPATH "/usr/local/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/root/work/Service/scripts/luaclib/libb2d.so")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/root/service/Service/scripts/luaclib/libb2d.so")
     endif()
   endif()
 endif()
@@ -76,5 +76,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/root/service/bridge/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/root/service/Box2d_lua_Bridge/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

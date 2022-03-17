@@ -25,8 +25,7 @@ sol::table RegisterAll(sol::this_state L) {
     b2_circle_shape_Register(module);
     b2_edge_shape_Register(module);
 	b2_polygon_shape_Register(module);
-    b2_shape_Register(module);
-    cout << "AAAAAAAAA" << endl;
+    b2_shape_Register(module); 
 	return module ;
 }       
 

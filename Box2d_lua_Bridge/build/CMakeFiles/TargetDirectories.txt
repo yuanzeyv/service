@@ -1,7 +1,7 @@
-/root/service/bridge/build/CMakeFiles/install/strip.dir
-/root/service/bridge/build/CMakeFiles/install/local.dir
-/root/service/bridge/build/CMakeFiles/edit_cache.dir
-/root/service/bridge/build/CMakeFiles/install.dir
-/root/service/bridge/build/CMakeFiles/list_install_components.dir
-/root/service/bridge/build/CMakeFiles/rebuild_cache.dir
-/root/service/bridge/build/CMakeFiles/b2d.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/install/strip.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/install/local.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/edit_cache.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/install.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/list_install_components.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/rebuild_cache.dir
+/root/service/Box2d_lua_Bridge/build/CMakeFiles/b2d.dir
