@@ -26,8 +26,7 @@ function Box2dTest:CreateCircle()
     local cicleShape = new(b2.b2CircleShape)
     fixtureDef.shape = cicleShape:GetShapePoint()--目前没有找到强制转换的方法，所以需要一个指针获取
     fixtureDef.density = 20
-    cicleShape:GetShapePoint().p = 999
-    print(cicleShape.p ,cicleShape:GetShapePoint().p, "PP") 
+    cicleShape:GetShapePoint().p = 999 
     local circleBody = self._world:CreateBody(b2Def) --首先需要创建一个刚体 
     circleBody:CreateFixture_Fixture(fixtureDef)
     return circleBody
