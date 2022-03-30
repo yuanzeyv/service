@@ -60,7 +60,7 @@ function MsgService:Server_DispatchMsg(fd, msg, sz) --消息派发
 	if not self._connection[fd] then
 		skynet.error(string.format("Drop message from fd (%d) : %s", fd, netpack.tostring(msg,sz)))  
 		return 
-	end 
+	end   
 	self._msgMediatorObj:MessageDispose(fd, msg, sz)
 end
 
@@ -85,8 +85,7 @@ function MsgService:Server_ConnectClient(fd, msg)
 	self._client_number = self._client_number + 1 --连接数目+1
 	self._msgMediatorObj:ConnectDispose(fd, msg)--调用连接函数
 end 
-function MsgService:Server_DeconnectClient(fd)  --close
-	print("Server_DeconnectClient",fd)
+function MsgService:Server_DeconnectClient(fd)  --close 
 	if fd ~= self._socket then 
 		self._client_number = self._client_number - 1--数目减一
 		if self._connection[fd] then--如果当前存在的话
@@ -129,6 +128,11 @@ function MsgService:InitEventDispatch()
 			skynet.ret(skynet.pack(func(source, ...))) 
 		end  
 	end) 
+	skynet.register_protocol {
+		name = "client",
+		id = skynet.PTYPE_CLIENT,
+		pack = skynet.pack, 
+ 	} 
 end  
  
 function MsgService:InitNetDispatch()  

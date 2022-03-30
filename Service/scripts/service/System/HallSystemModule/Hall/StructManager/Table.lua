@@ -1,104 +1,131 @@
-require "Tool.Class"
-local Map = require "Tool.Map"
-local Table = class("Table") 
-Table.PLAYER_ACTION_STATUS = {SIT = 1 ,LOOK = 0}   
-Table.PLAYER_STATUS = {UNREADY = 0 ,READY = 1 ,PLAYING = 2}   
+require "Tool.Class" 
+local Map = require "Tool.Map" 
+local Table = class("Table")  
+Table.PLAYER_STATUS = {LOOK = 0, UNREADY = 1 ,READY = 2 ,PLAYING = 3}  
 function Table:ctor(tableInfo)    
     self.maxPlayerCount = assert(tableInfo.maxPlayerCount,"param miss")
     self.maxSitDownPlayer = assert(tableInfo.maxSitDownPlayer,"param miss")
     self._startGameNeedPlayer = assert(tableInfo.startGameNeedPlayer,"param miss") 
     --房间能坐下的所有人员 
-    self._allPlayerArray = Map.new()
-    self._playStatusTable = {} 
-    self._playStatusTable[Table.PLAYER_ACTION_STATUS.SIT] = Map.new()
-    self._playStatusTable[Table.PLAYER_ACTION_STATUS.LOOK] =  Map.new() --当前的观战玩家数组   
-    self._tableGameHandle = nil --桌子关联的句柄
+    self._allPlayerArray = Map.new() 
+    --每种状态对应的角色
+    self._StatusArray = {}  
+    self._StatusArray[self.PLAYER_STATUS.LOOK] = Map.new() 
+    self._StatusArray[self.PLAYER_STATUS.UNREADY] = Map.new() 
+    self._StatusArray[self.PLAYER_STATUS.READY] = Map.new() 
+    self._StatusArray[self.PLAYER_STATUS.PLAYING] = Map.new() 
+    self._homeSteward = nil--当前的房主
+    self._tableGameHandle = nil --桌子关联的游戏句柄
 end
-function Table:CanStartGame()
-    if self:IsPlaying() then
-        return false
-    end
-    local readyCount = 0
-    for v,k in pairs(self._playStatusTable[Table.PLAYER_ACTION_STATUS.SIT]:GetTable()) do
-        if k:GetGameStatus() == k.GAME_STATUS.READY then
-            readyCount = readyCount + 1  
-        end
-    end
-    return readyCount >= self._startGameNeedPlayer 
+--当前是否可以被坐下
+--return true 可以添加
+--return false 不可以添加
+function Table:CanSitDown()
+    local unReadyCount = self._StatusArray[self.PLAYER_STATUS.UNREADY]:Count()
+    local readyCount = self._StatusArray[self.PLAYER_STATUS.READY]:Count() 
+    return (unReadyCount + readyCount) < self.maxSitDownPlayer
 end  
---添加一个角色到球桌
-function Table:AddPlayer(player) 
-    local playerID = player:GetID()
-    local playerInfo = self._allPlayerArray:Find(playerID) 
-    assert(not playerInfo,"player early enter table")
-    assert(self._allPlayerArray:Count() < self.maxPlayerCount,"table is Full" )  
-    self._allPlayerArray:Add(playerID,player)
-    self._lookPlayerArray:ADD(playerID,player)
-    player:EnterTable(self)
-end 
---删除一个角色到球桌
-function Table:DeletePlayer(player)
-    local playerID = player:GetID()
-    local playerInfo = assert(self._allPlayerArray:Find(playerID) ,"not found has table of player") 
-    assert(not playerInfo:GetPlayerIsBus(),"status not compare") --当前用户不是忙碌状态
-    assert(self._playStatusTable[playerInfo:GetTableStatus()],"player status bus") 
-    self._allPlayerArray:Delete(playerID)
-    self._playStatusTable[playerInfo.playerAction]:Delete(playerInfo.handle) 
-    player:LeaveTable()
+--有一个判断是否可以开始游戏
+function Table:GetGameHandle()
+    return self._tableGameHandle
+end  
+--添加角色到桌子中 
+function Table:PlayerEnter(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if playerStatus then 
+        return -1 
+    end 
+    if not self:CanSitDown() then 
+        return -6
+    end 
+    self._allPlayerArray:Add(playerHandle,self.PLAYER_STATUS.UNREADY)
+    self._StatusArray[self.PLAYER_STATUS.UNREADY]:Add(playerHandle,true)--角色加入到桌子
+    return 0
+end  
+--角色将退出桌子
+function Table:PlayerLeave(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if not playerStatus then 
+        return -1 
+    end  
+    local StatusList = {}
+    StatusList[self.PLAYER_STATUS.READY] = -4 --玩家已经准备了 
+    StatusList[self.PLAYER_STATUS.PLAYING] = -5 --玩家已经开始游戏了 
+    if StatusList[playerStatus] then 
+        return StatusList[playerStatus] 
+    end    
+    self._allPlayerArray:Delete(playerHandle)
+    self._StatusArray[playerStatus]:Delete(playerHandle)--角色加入到桌子
+    return 0
 end
---设置当前角色动作
-function Table:SetPlayerAction(player,action)
-    local playerID = player:GetID()
-    local playerInfo = assert(self._allPlayerArray:Find(playerID) ,"not found has table of player") 
-    local playerAction = playerInfo:GetTableStatus()
-    assert(playerAction ~= action,"action is same")  
-    assert(self._playStatusTable[playerAction],"player status error")
-    assert(self._playStatusTable[action],"player status error")
-    self._playStatusTable[playerAction]:Delete(playerInfo.handle)  
-    self._playStatusTable[action]:Add(playerInfo.handle,playerInfo)   
-    player:SetTableStatus(action)
-end 
---设置当前角色游戏状态
-function Table:SetPlayerGameStatus(player,gameStatus)
-    local playerID = player:GetID()
-    local playerInfo = assert(self._allPlayerArray:Find(playerID) ,"not found has table of player")    
-    playerInfo:SetGameStatus(gameStatus)
-end  
-
-
-
-function Table:PlayerEnter(player,action)
-    self:AddPlayer(player)
-    self:SetPlayerAction(player,action)
+--角色进入观战模式
+function Table:PlayerEnterLookModule(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if not playerStatus then 
+        return -1 
+    end  
+    local StatusList = {}
+    StatusList[self.PLAYER_STATUS.LOOK] = -2 --玩家在观察模式
+    StatusList[self.PLAYER_STATUS.READY] = -4 --玩家已经准备了 
+    StatusList[self.PLAYER_STATUS.PLAYING] = -5 --玩家已经开始游戏了 
+    if StatusList[playerStatus] then 
+        return StatusList[playerStatus] 
+    end     
+    --未准备模式下 可以进入
+    self._allPlayerArray:Add(playerHandle,self.PLAYER_STATUS.LOOK) 
+    self._StatusArray[playerStatus]:Delete(playerHandle)--角色加入到桌子
+    self._StatusArray[self.PLAYER_STATUS.LOOK ]:Add(playerHandle,true)--角色加入到桌子
+    return 0
 end
-
-function Table:PlayerLeave(player) 
-    self:DeletePlayer(player)
-end  
-
-function Table:PlayerCancelReady(player)
-    self:SetPlayerGameStatus(player,player.GAME_STATUS.UN_READY) 
+--角色进入未准备模式
+function Table:PlayerEnterUnReadyModule(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if not playerStatus then 
+        return -1 
+    end  
+    StatusList[self.PLAYER_STATUS.UNREADY] = -3 --玩家已经准备了 
+    StatusList[self.PLAYER_STATUS.PLAYING] = -5 --玩家已经开始游戏了 
+    if StatusList[playerStatus] then 
+        return StatusList[playerStatus] 
+    end       
+    self._allPlayerArray:Add(playerHandle,self.PLAYER_STATUS.UNREADY)  
+    self._StatusArray[playerStatus]:Delete(playerHandle)--角色加入到桌子
+    self._StatusArray[self.PLAYER_STATUS.UNREADY]:Add(playerHandle,true)--角色加入到桌子
+end
+--角色进入准备模式
+function Table:PlayerEnterReadyModule(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if not playerStatus then 
+        return -1 
+    end 
+    local StatusList = {}
+    StatusList[self.PLAYER_STATUS.LOOK] = -2 --玩家乜有坐下
+    StatusList[self.PLAYER_STATUS.READY] = -4 --玩家已经准备了
+    StatusList[self.PLAYER_STATUS.PLAYING] = -5 --玩家已经开始游戏了 
+    if StatusList[playerStatus] then 
+        return StatusList[playerStatus] 
+    end   
+    --未准备模式下 可以进入
+    self._allPlayerArray:Add(playerHandle,self.PLAYER_STATUS.READY)  
+    self._StatusArray[playerStatus]:Delete(playerHandle)--角色加入到桌子
+    self._StatusArray[self.PLAYER_STATUS.READY]:Add(playerHandle,true)--角色加入到桌子
+end
+--游戏开始
+function Table:PlayerEnterPlayModule(playerHandle)
+    local playerStatus = self._allPlayerArray:Find(playerHandle)
+    if not playerStatus then 
+        return -1 
+    end 
+    local StatusList = {}
+    StatusList[self.PLAYER_STATUS.LOOK] = -2 --玩家乜有坐下 
+    StatusList[self.PLAYER_STATUS.UNREADY] = -3 --玩家已经准备了  
+    StatusList[self.PLAYER_STATUS.PLAYING] = -5 --玩家已经开始游戏了 
+    if StatusList[playerStatus] then 
+        return StatusList[playerStatus] 
+    end   
+    --未准备模式下 可以进入
+    self._allPlayerArray:Add(playerHandle,self.PLAYER_STATUS.PLAYING)  
+    self._StatusArray[playerStatus]:Delete(playerHandle)--角色加入到桌子
+    self._StatusArray[self.PLAYER_STATUS.PLAYING]:Add(playerHandle,true)--角色加入到桌子
 end   
-function Table:PlayerReady(player) 
-    self:SetPlayerGameStatus(player,player.GAME_STATUS.READY) 
-end  
-function Table:PlayerStartGame(player)   
-    self:SetPlayerGameStatus(player,player.GAME_STATUS.PLAYEING) 
-end  
-
-function Table:PlayerStandUp(player)
-    self:SetPlayerAction(player,player.TABLE_ACTION_STATUS.LOOK) 
-       
-end  
-function Table:PlayerSitDown(player)
-    self:SetPlayerAction(player,player.TABLE_ACTION_STATUS.SIT) 
-end   
-
-function Table:SetTableGameHandle(handle)
-    self._tableGameHandle = handle
-end 
-function Table:IsPlaying()
-    return self._tableGameHandle ~= nil 
-end 
-
 return Table 

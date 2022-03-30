@@ -41,7 +41,7 @@ function setMetaTableIndex(t, index)
     end
 end 
 
-function class(classname, ...)
+function class(classname, ...) 
     local cls = { __cname = classname }
     local supers = { ... }
     for _, super in ipairs(supers) do

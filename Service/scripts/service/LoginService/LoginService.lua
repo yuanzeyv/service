@@ -89,7 +89,7 @@ function LoginService:ServerHandle_login(server, uid)
     return subid--返回subid
 end
 
-function LoginService:Accept(fd,addr)   
+function LoginService:Accept(fd,addr)  
 	local slave = self:GetNextSlave()--首先获取到从设备 
 	local ok, serverOrCode, uid = skynet.call(slave, "lua","login_virify",fd, addr)--向从设备执行验证  -
 	if not ok then--如果当前返回为假

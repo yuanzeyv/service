@@ -1,6 +1,4 @@
-local skynet = require "skynet"
-require "Tool.Class" 
-local GameServiceBase = require("HallSystemModule.HallService.GameService")
+local GameServiceBase = require("HallSystemModule.HallService.GameModule")
 local GameService = class("GameService",GameServiceBase)       
 function GameService:Server_TapCard(playHandle,msgName,tableId,param2,param3,param4,data)
     local hallHandle = assert(self._manager:GetPlayerHallHandle(playHandle),"player early enter hall")--玩家未加入系统 或者没有加入大厅   

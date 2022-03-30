@@ -1,93 +1,75 @@
-local SystemServiceList = require("Config.SystemServiceList").Instance()  
-local NetCommandConfig = require("Config.NetCommandConfig").Instance() 
-local SystemIDConfig = require("Config.SystemIDConfig").Instance()  
-local skynet = require "skynet"
+
+--return -1 被登入的系统ID不存在
+--return -2 登入系统失败
+--return -3 玩家已经加入了房间了
+--return -4 玩家重复登入了系统了
+--return -5 玩家未登入系统
+local BaseService = require "BaseService.BaseService" 
+local SystemService = class("SystemService",BaseService) 
+require "Tool.Json"  
+require "Tool.Class" 
 require "skynet.manager"
-require "Tool.Class"
-require "Tool.Json"
-local SystemService = class("SystemService") 
-function SystemService:GetCMD()
-    local CMD = {}
-	return CMD
+local skynet = require "skynet"
+local SystemIDConfig = require("Config.SystemIDConfig").Instance()  
+local SystemServiceList = require("Config.SystemServiceList").Instance()   
+function SystemService:RegisterCommand(commandTable)
+end
+function SystemService:Server_LoginSystem(sendObj,systemId,param2,param3,param4,str) 
+    local userHandle = sendObj:GetUser()--获取到用户的handle
+    sendObj:SetCMD("Net_LoginSystem_RET")--设置返回消息
+    sendObj:SetParam1(0)--登入系统成功 
+    sendObj:SetParam2(systemId)--设置返回消息 
+    if not self._SystemList[systemId] then 
+        sendObj:SetParam1(-1)--设置返回消息 
+        return
+    end  
+    local loginRet = skynet.call(self._SystemList[systemId],"lua","login_system",userHandle) --向系统中登入 用户 
+    sendObj:SetParam1(loginRet)--设置返回消息  
 end
 
-function SystemService:Server_LoginSystem(source,msgName,systemId,param2,param3,param4,str) 
-    assert(self._SystemList[systemId], "system not exist in the list" ) 
-    local ret,systemID = skynet.call(self._SystemList[systemId],  "lua","login_system",source) --向系统中登入 用户 
-    skynet.send(source,"lua","write",NetCommandConfig:FindCommand(self.systemID,"Net_LoginSystem_RET"),ret,systemID,1,1) 
-    return ret
-end
-
-function SystemService:Server_LeaveSystem(source,msgName,systemId,param2,param3,param4,str)
-    assert(self._SystemList[systemId], -1 )
+function SystemService:Server_LeaveSystem(sendObj,systemId,param2,param3,param4,str)
+    local userHandle = sendObj:GetUser()--获取到用户的handle
+    sendObj:SetCMD("Net_LoginOutSystem_ret")--设置返回消息
+    sendObj:SetParam1(0)--登入系统成功 
+    sendObj:SetParam2(systemId)--设置返回消息  
+    if not self._SystemList[systemId] then 
+        sendObj:SetParam1(-1)--设置返回消息 
+        return
+    end  
     skynet.send(self._SystemList[systemId], "lua","unregister_agent",source)
-    skynet.send(source,"lua","unregister_system",systemId)
-    skynet.send(source,"lua","write",NetCommandConfig:FindCommand(self.systemID,"Net_LoginOutSystem_ret"),2,3,1,1)
+    skynet.send(userHandle,"lua","unregister_system",systemId)
 end  
 
-function SystemService:Server_RequestSystem(source,msgName,param1,param2,param3,param4,str)    
+function SystemService:Server_RequestSystem(sendObj,param1,param2,param3,param4,str)     
+    local userHandle = sendObj:GetUser()--获取到用户的handle
+    sendObj:SetCMD("Net_RequestSystem_RET")--设置返回消息
     local retTable = {}
     for v,k in pairs(self._SystemList) do
         local systemInfo = skynet.call(k, "lua","request_system_info")
         table.insert(retTable,systemInfo)
     end
-    print(Json.Instance():Encode(retTable));
-    skynet.send(source,"lua","write",NetCommandConfig:FindCommand(self.systemID,"Net_RequestSystem_RET"),0,999,1,1,Json.Instance():Encode(retTable))
+    sendObj:SetJson(retTable)--返回一个字符串  
 end
- 
-function SystemService:GetServerList()
-    local serverList = {} 
-	serverList.Net_LoginSystem = handler(self,SystemService.Server_LoginSystem)
-	serverList.Net_LeaveSystem = handler(self,SystemService.Server_LeaveSystem)
-	serverList.Net_RequestSystem = handler(self,SystemService.Server_RequestSystem)
-	return serverList
-end  
-
-function SystemService:InitEventDispatch()  
-    skynet.dispatch("lua", function(session, source, command, ...)
-        local f = assert(self._command[command])
-        skynet.ret(skynet.pack(f(source, ...)))
-    end)
-    skynet.register_protocol {
-        name = "client",
-        id = skynet.PTYPE_CLIENT,
-        unpack = skynet.unpack,
-        dispatch =function(_,source,msgName,param1,param2,param3,param4,str) 
-            local ret = nil 
-            if self._serverList[msgName] then
-                ret = self._serverList[msgName](source,msgName,param1,param2,param3,param4,str)
-            end
-            skynet.ret() 
-        end
-    }
-end
-
-function SystemService:InitServerData()
-    local systemArray = assert(SystemServiceList:GetTable() ,"配置不全")
-    self._command = self:GetCMD()
-    self._SystemList = {} 
-    
-    self._ServiceInfoTable = systemArray
-    self._serverList = self:GetServerList()
-    self.systemID = SystemIDConfig:GetTable().SystemManager
-end
-
-function SystemService:ctor()   
-    self:InitServerData()
-    self:InitServer()
-end
+function SystemService:RegisterNetCommand(serverTable) 
+	serverTable.Net_LoginSystem = handler(self,SystemService.Server_LoginSystem)
+	serverTable.Net_LeaveSystem = handler(self,SystemService.Server_LeaveSystem)
+	serverTable.Net_RequestSystem = handler(self,SystemService.Server_RequestSystem) 
+end    
 
 function SystemService:OpenAllSystem()
-    for v,k in pairs(self._ServiceInfoTable) do  
+    for v,k in pairs(self._ServiceInfoTable) do 
         self._SystemList[v] = skynet.newservice(k,v)
     end
-end
-
-function SystemService:InitServer() 
-	skynet.start(function ()  
-        skynet.register(".SystemManager")
-        self:InitEventDispatch()
-        self:OpenAllSystem() 
-	end) 
+end 
+--初始化数据
+function SystemService:InitServerData(...)  
+    self._ServiceInfoTable  = assert(SystemServiceList:GetTable() ,"配置不全")    
+    self._SystemList = {}    
 end  
-local SystemService = SystemService.new()
+ 
+--初始化系统
+function SystemService:InitSystem()   
+    skynet.register(".SystemManager")
+    self:OpenAllSystem()--初始化完毕后打开所有的系统
+end   
+local systemService = SystemService.new(SystemIDConfig:GetTable().SystemManager) 

@@ -81,6 +81,14 @@ function Tool:Disorganize(table,count)
       table[randIndex],table[i] = table[i],table[randIndex] 
   end          
 end  
+--打乱一个数组 
+function Tool:GetTableSize(table) 
+  local count = 0
+  for v,k in pairs(table ) do 
+    count = count + 1 
+  end         
+  return count
+end  
 
 local isntance = nil
 --获取到当前服务的单列

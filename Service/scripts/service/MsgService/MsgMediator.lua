@@ -27,7 +27,7 @@ function MsgMediator:Logout(username)
 	end
 end
 
-function MsgMediator:Login(username)
+function MsgMediator:Login(username) 
 	assert(self._userOnline[username] == nil)--如果没有查询到用户在线信息
 	self._userOnline[username] = {--设置用户在线  
 		username = username, 
@@ -44,16 +44,16 @@ function MsgMediator:Write(username,msg)--写一个数据
 	self._MsgServiceObj:WriteClient(u.fd,string.pack(">I2",#msg) .. msg ) --写数据
 end
 
-function MsgMediator:Command_Login(uid) --login校验成功后，会调用登录命令 uid为用户账号
+function MsgMediator:Command_Login(source,uid) --login校验成功后，会调用登录命令 uid为用户账号
 	return self._MsgExecuteObj:LoginHandler(uid)
 end 
-function MsgMediator:Command_Write(username,msg) 
+function MsgMediator:Command_Write(source,username,msg) 
 	self._MsgExecuteObj:WriteHandler(username,msg)
 end 
-function MsgMediator:Command_Logout(uid, subid) 
+function MsgMediator:Command_Logout(source,uid, subid) 
 	self._MsgExecuteObj:LogoutHandler(uid, subid)
 end 
-function MsgMediator:Command_Kick(uid, subid) 
+function MsgMediator:Command_Kick(source,uid, subid) 
 	self._MsgExecuteObj:KickHandler(uid, subid)
 end 
 
@@ -71,28 +71,29 @@ function MsgMediator:GetCMDList()
 end
 
 function MsgMediator:DoRequest(fd, message)
-	local u = assert(self._connection[fd], "无效的套接字 用户可能已经断开了连接")   
-	local ret , result = pcall(MsgExecuteFinal.RequestHandler,self._MsgServiceObj, u.username, message) 
+	local u = assert(self._connection[fd], "无效的套接字 用户可能已经断开了连接")    
+	local ret , result = pcall(MsgExecuteFinal.RequestHandler,self._MsgExecuteObj, u.username, message) 
 	if not ret then 
-		print(result..":message dispos error fd:"..fd)
+		skynet.error(result..":message dispos error fd:"..fd)
 	end  
 end
 
 function MsgMediator:Request(fd, msg, sz)
-	local message = netpack.tostring(msg, sz) 
+	local message = netpack.tostring(msg, sz)  
 	local ok, err = pcall(self.DoRequest,self,fd, message)
 	-- not atomic, may yield
 	if not ok then
 		skynet.error(string.format("Invalid package %s : %s", err, message))  
 		if self._connection[fd] then
-			self._GateserverWr.closeclient(fd)
+			self._MsgServiceObj:CloseClient(fd)
 		end
 	end
 end
 
 function MsgMediator:DoAuth(fd, message, addr)
-	local username, index = string.match(message, "([^:]*):([^:]*)") --获取到用户名称
+	local username, index = string.match(message, "([^:]*):([^:]*)") --获取到用户名称 
 	index = tonumber(index)--这个index可用用来校验是否登录成功 目前不用
+
 	assert(index,"400 Bad Request") 
 	local u = self._userOnline[username] 
 	assert(u ,"404 User Not Found")     
@@ -116,7 +117,7 @@ function MsgMediator:MessageDispose(fd, msg, sz) --如果收到了消息
 	if addr then--如果当前需要验证的话
 		self:Auth(fd,addr,msg,sz)--开始验证
 		self._handshake[fd] = nil
-	else   
+	else    
 		self:Request(fd, msg, sz)
 	end
 end

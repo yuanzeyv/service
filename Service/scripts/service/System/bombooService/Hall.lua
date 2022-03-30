@@ -10,8 +10,8 @@ function Hall:CommandList()
     local CMD = {}  
     return CMD;
 end 
-local id = ...
-local Hall = Hall.new(id,{
+local systemID,hallID = ...
+local Hall = Hall.new(systemID,hallID,{
     hallData = {} ,  
     tableData = {
         --table = {maxPlayerCount = 999,maxSitDownPlayer = 200,startGameNeedPlayer = 3,tableCount = 27}

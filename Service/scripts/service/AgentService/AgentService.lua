@@ -1,18 +1,23 @@
-local skynet = require "skynet"  
-require "Tool.Class" 
-local SystemIDConfig = require("Config.SystemIDConfig").Instance()
+ local SystemIDConfig = require("Config.SystemIDConfig").Instance()
 local netCommandConfig = require("Config.NetCommandConfig").Instance()
-local AgentService = class("AgentService")     
-
-function AgentService:Command_Login(source, uid, sid,username)--登录成功，secret可以用来加解密数据 
-    self:InitServerData(source, uid, sid,username)
+local ServiceModle = require "ServiceModle.ServiceModle" 
+local AgentService = class("AgentService",ServiceModle)    
+function AgentService:Command_Login(source, uid, sid,username)--登录成功
+	assert(source and uid and sid,"参数传入有误") 
+    self._gate   = source
+    self._userid = uid
+    self._subid  = sid  
+    self._username = username 
+    self._serviceHandle = skynet.self()
+    --程序一上来就会寻找系统管理服务
+    self._systemControlHandle = {
+        [SystemIDConfig:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
+    }
 end 
 
 function AgentService:Command_Logout(source) 
-    skynet.error(string.format("%s is logout", self._userid))
-    if self._gate then
-        skynet.call(self._gate, "lua", "logout", self._userid, self._subid)
-    end
+    assert(self._gate,"用户未初始化就退出") 
+    skynet.call(self._gate, "lua", "logout", self._userid, self._subid) 
     skynet.exit()
 end 
 
@@ -24,8 +29,7 @@ function AgentService:Command_Write(source,...)
     skynet.call(self._gate, "lua", "write",self._username,self:PackMsg(...))
 end
 
-function AgentService:Command_RegisterSystem(source,systemID,handle)  
-    print("玩家登入了系统",systemID)
+function AgentService:Command_RegisterSystem(source,systemID,handle)   
     self._systemControlHandle[systemID] = {handle = handle}
 end 
 
@@ -33,74 +37,36 @@ function AgentService:Command_UnRegisterSystem(source,systemID)
     self._systemControlHandle[systemID] = nil
 end 
 
-function AgentService:GetCMD()
-    local CMD = {}
-	CMD.login =  handler(self,AgentService.Command_Login)
-	CMD.logout = handler(self,AgentService.Command_Logout)
-	CMD.disconnect = handler(self,AgentService.Command_Disconnect)
-	CMD.write = handler(self,AgentService.Command_Write)
-	CMD.register_system = handler(self,AgentService.Command_RegisterSystem)
-	CMD.unregister_system = handler(self,AgentService.Command_UnRegisterSystem)
-	return CMD
-end
- 
-function AgentService:PackMsg(msgId,param1,param2,param3,param4,str)
-    assert(msgId,"msgId is error") 
-    return string.pack("<I4 I4 I4 I4 I4 s4",msgId,param1 or 0 ,param2 or 0 ,param3 or 0 ,param4 or 0 ,str or "")
-end  
-
-function AgentService:InitEventDispatch() 
--- If you want to fork a work thread , you MUST do it in CMD.login
-    skynet.dispatch("lua", function(session,source,command,...)   
-        local f = assert(self._command[command])  
-        skynet.ret(skynet.pack(f(source,...)))
-    end)  
- 
+function AgentService:RegisterCommand(commandTable)
+	commandTable.login             =  handler(self,AgentService.Command_Login)
+	commandTable.logout            =  handler(self,AgentService.Command_Logout)
+	commandTable.disconnect        =  handler(self,AgentService.Command_Disconnect)
+	commandTable.write             =  handler(self,AgentService.Command_Write)
+	commandTable.register_system   = handler(self,AgentService.Command_RegisterSystem)
+	commandTable.unregister_system = handler(self,AgentService.Command_UnRegisterSystem)
+ end 
+function AgentService:__InitNetEventDispatch() 
     skynet.register_protocol {
         name = "client",
         id = skynet.PTYPE_CLIENT,
         pack = skynet.pack,
         unpack = skynet.unpack,
-        dispatch =function(_,source,msgId,param1,param2,param3,param4,str) 
-            local FindSystem = netCommandConfig:FindByIndex(msgId)--寻找到消息ID对应的数据信息
-            if not FindSystem then  
-                return
-            end
-            local systemInfo = self._systemControlHandle[FindSystem.systemID]--通过对应的
-            if not systemInfo then  
-                print("消息" + msgId +"没有找到指定的系统" + FindSystem.systemID)
-                return
-            end  
-            print(FindSystem.cmdName,param1,param2,param3,param4,str , "QQQQQQQQQ")
-            skynet.send(systemInfo.handle,"client",FindSystem.cmdName,param1,param2,param3,param4,str)  
+        dispatch =function(_,source,msgId,param1,param2,param3,param4,str)  
+            print("AAAAAAAAAAAAA",msgId)
+            local FindSystem = assert(netCommandConfig:FindByIndex(msgId),"没有找到指定消息")--寻找到消息ID对应的数据信息  
+            local systemInfo = assert(self._systemControlHandle[FindSystem.systemID],"消息".. msgId.."没有找到指定的系统" )--通过系统ID查找指定系统
+            skynet.send(systemInfo.handle,"client",FindSystem.cmdName,self._serviceHandle,param1,param2,param3,param4,str)  
         end 
     }
-end 
-
-function AgentService:InitServerData(source, uid, sid,username) 
-	assert(source and uid and sid,"参数传入有误") 
-    self._gate   = source
-    self._userid = uid
-    self._subid  = sid  
-    self._username = username
-    self._systemControlHandle = {
-        [SystemIDConfig:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
-    }
 end
-
-function AgentService:ctor()  
+function AgentService:PackMsg(msgId,param1,param2,param3,param4,str)
+    return string.pack("<I4 i4 i4 i4 i4 s4",msgId,param1 or 0 ,param2 or 0 ,param3 or 0 ,param4 or 0 ,str or "")
+end   
+function AgentService:InitServerData(...)
     self._gate   = nil
     self._userid = nil
     self._subid  = nil   
-    self._systemControlHandle = nil 
+    self._systemControlHandle = nil     
+end    
 
-    self._command  = self:GetCMD()   
-	self:InitServer()
-end
-
-function AgentService:InitServer()  
-	skynet.start(function ()  
-		self:InitEventDispatch()  
-	end)
-end
 local AgentService = AgentService.new()

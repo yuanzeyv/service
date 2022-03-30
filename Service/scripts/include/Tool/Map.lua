@@ -21,7 +21,15 @@ function Map:Delete(key)
         return
     end
     self._table[key] = nil
-    self._count = self._count + 1
+    self._count = self._count - 1 
+end 
+function Map:Pop(key)
+    local value =  self._table[key]  
+    if not value then
+        return nil 
+    end 
+    self:Delete(key)
+    return value
 end 
 function Map:Count()
     return self._count

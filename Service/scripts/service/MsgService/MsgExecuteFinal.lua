@@ -53,15 +53,15 @@ function MsgExecuteFinal:DisconnectHandler(username)--断开连接时 调用
     skynet.error(username, "disconnect")  
 end
 
-function MsgExecuteFinal:AnalysisMsg(msg)--解析一条消息 
+function MsgExecuteFinal:AnalysisMsg(msg)--解析一条消息  
     local ret,msgtable = pcall(function (msg) return table.pack(string.unpack("<I4 I4 I4 I4 I4 s4",msg)) end,msg)  
     assert(ret,nil)  
     return msgtable
 end 
 
-function MsgExecuteFinal:RequestHandler(username, msg)--处理消息时调用
+function MsgExecuteFinal:RequestHandler(username, msg)--处理消息时调用 
     local msgTable = self:AnalysisMsg(msg) 
-    assert(msgTable,"message fromat error")     
+    assert(msgTable,"message fromat error")        
     return skynet.send(self._agentHandles[username],"client",table.unpack(msgTable)) 
 end   
 

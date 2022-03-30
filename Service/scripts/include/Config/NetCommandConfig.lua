@@ -42,16 +42,11 @@ function NetCommandConfig:InitTable()
 
     --第一个系统区域 100 - 200
     --的所有消息（这是一个房间的所有通用消息）
-    self:AddNetCommand("Net_Request_HallList",self._idTable.PokerSystem,100) --进入大厅
-    self:AddNetCommand("Net_Request_HallList_RET",self._idTable.PokerSystem,101) --大厅列表的返回
+    self:AddNetCommand("Net_Request_HallList",self._idTable.PokerSystem,100) --进入大厅 
 
-    --self:AddNetCommand("Net_EnterHall",self._idTable.PokerSystem,100) --进入大厅
-    --self:AddNetCommand("Net_LeaveHall",self._idTable.PokerSystem,101) --离开大厅
-    --self:AddNetCommand("Net_RequestHallInfo",self._idTable.PokerSystem,101) --离开大厅
-
-    self:AddNetCommand("Net_EnterHall_ret",self._idTable.PokerSystem,102) --进入大厅
-    self:AddNetCommand("Net_LeaveHall_ret",self._idTable.PokerSystem,103) --离开大厅
-    self:AddNetCommand("Net_RequestHallInfo_ret",self._idTable.PokerSystem,104) --离开大厅
+    -- self:AddNetCommand("Net_EnterHall",self._idTable.PokerSystem,100) --进入大厅
+    -- self:AddNetCommand("Net_LeaveHall",self._idTable.PokerSystem,101) --离开大厅
+    -- self:AddNetCommand("Net_RequestHallInfo",self._idTable.PokerSystem,101) --离开大厅 
     
     self:AddNetCommand("Net_PlayerReady"  ,self._idTable.PokerSystem,110)  --玩家准备
     self:AddNetCommand("Net_PlayerSitDown",self._idTable.PokerSystem,111) --玩家坐下 
