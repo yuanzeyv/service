@@ -1,13 +1,6 @@
-
---角色进入未准备模式
---return 0  函数执行正常
---return -1 玩家已经加入了桌子 
---return -2 大厅玩家已经满员了
---return -3 玩家没有加入到大厅
---return -4 玩家没有加入到桌子
 require "Tool.Class" 
 local Map = require "Tool.Map" 
-local Player = require"HallSystemModule.Hall.StructManager.Player" --大厅里面有桌子 
+local Player = require"HallSystemModule.Hall.StructManager.PlayerManager.Player" --大厅里面有桌子 
 local PlayerManager = class("PlayerManager")    
 function PlayerManager:ctor(table)    
     self:InitServiceData(table)
@@ -27,41 +20,38 @@ end
   
 --添加一个角色
 function PlayerManager:PlayerEnterHall(userHandle)
-    --assert(self._playerArray.count >= self._maxCapacity,"已经到达了大厅所能容纳的最大人员数目了")
     if self._playerArray:Count() >= self._maxCapacity then 
-        return -2
+        return G_ErrorConf.HallPersonFull
     end  
-    local player = Player.new(userHandle)
+    local player = Player.new(userHandle)--新建一个玩家
     self._playerArray:Add(userHandle,player) --玩家加入到管理列表
     player:EnterHall() --玩家进入大厅
-    return 0
+    return G_ErrorConf.ExecuteSuccess
 end  
 
 --删除一个角色
 function PlayerManager:PlayerLeaveHall(userHandle)
     local player=self:GetPlayer(userHandle)
-    if not player then return -3 end  
-    self._playerArray:Delete(userHandle) 
-    return player:LeaveHall() 
+    if not player then return G_ErrorConf.PlayerNotEnterHall end  
+    self._playerArray:Delete(userHandle) --删除当前的玩家
+    return player:LeaveHall() --玩家离开
 end  
 --玩家进入桌子
 function PlayerManager:EnterTable(userHandle,tableID) 
     local player=self:GetPlayer(userHandle)
-    if not player then 
-        return -3
-    end  
-    return player:EnterTable(tableID)
+    if not player then return G_ErrorConf.PlayerNotEnterHall end  --如果根本没有找到当前的玩家
+    return player:EnterTable(tableID)--进入桌子
 end 
 --玩家离开桌子    
 function PlayerManager:LeaveTable(userHandle)
     local player=self:GetPlayer(userHandle)
-    if not player then  return -3 end  
-    return player:LeaveTable(tableID) 
+    if not player then return G_ErrorConf.PlayerNotEnterHall end  --如果根本没有找到当前的玩家
+    return player:LeaveTable() 
 end  
 --获取到某一个玩家是否进入桌子
 function PlayerManager:GetPlayerTable(userHandle)
     local player=self:GetPlayer(userHandle)
-    if not player then return nil  end   
+    if not player then return nil end  --如果根本没有找到当前的玩家
     return player:GetTable()
-end  
+end   
 return PlayerManager 

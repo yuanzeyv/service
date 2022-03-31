@@ -1,5 +1,6 @@
 require "Tool.Json"
-local NetCommandConfig = require("Config.NetCommandConfig").Instance() 
+require("Config.Net_ErrorConfig")
+require("Config.NetCommandConfig")
 local BaseModule = class("BaseModule")    
 function BaseModule:ctor(manager,...) 
     self._manager = assert(manager,"对象未传入")
@@ -19,7 +20,7 @@ function BaseModule:GetDisposeCMD()
     return self._disposeCMD
 end 
 function BaseModule:SetCMD(cmdName)
-    self._CMD = assert(NetCommandConfig:FindCommand(self._manager:GetSystemID(),cmdName),string.format("系统(%s:%d):【%s】网络消息未找到",self._manager.__cname,self._manager:GetSystemID(),cmdName)) 
+    self._CMD = assert(G_NetCommandConf:FindCommand(self._manager:GetSystemID(),cmdName),string.format("系统(%s:%d):【%s】网络消息未找到",self._manager.__cname,self._manager:GetSystemID(),cmdName)) 
 end 
 function BaseModule:SetParam1(value) 
     self._param1 = assert(tonumber(value),"参数类型传入错误")

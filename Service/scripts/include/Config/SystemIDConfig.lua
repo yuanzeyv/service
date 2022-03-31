@@ -1,25 +1,16 @@
---防止重复包含
-if SystemIDConfig then
-    return SystemIDConfig
-end 
+if G_SysIDConf then return end--防止重复包含  
 require "Tool.Class"
-SystemIDConfig =  class("SystemIDConfig")  
+local SystemIDConfig =  class("SystemIDConfig")  
 function SystemIDConfig:ctor() 
     self._table = self:InitTable()
 end  
 function SystemIDConfig:InitTable()
     local table = {} 
-    table.SystemManager = 0
-    table.PokerSystem = 1
+    table.SystemManager = 1
+    table.PokerSystem = 2  
     return table
 end 
-function SystemIDConfig:GetTable() 
+function SystemIDConfig:GetTable()  
    return self._table
-end   
-function SystemIDConfig.Instance() 
-    if not SystemIDConfig._instance then
-       SystemIDConfig._instance = SystemIDConfig.new()
-    end 
-    return SystemIDConfig._instance
-end  
-return SystemIDConfig
+end     
+G_SysIDConf = SystemIDConfig.new() 

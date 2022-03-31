@@ -1,22 +1,12 @@
-if SystemServiceList then
-    return SystemServiceList
-end 
 require "Tool.Class"
-local SystemIDConfig = require "Config.SystemIDConfig".Instance() 
+require "Config.SystemIDConfig" 
 SystemServiceList =  class("SystemServiceList")   
-function SystemServiceList.Instance() 
-    if not SystemServiceList._instance then
-       SystemServiceList._instance = SystemServiceList.new()
-    end 
-    return SystemServiceList._instance
-end  
-function SystemServiceList:ctor() 
-    self._idTable = SystemIDConfig.Instance():GetTable() 
+function SystemServiceList:ctor()   
     self._Table = self:InitTable()
 end   
 function SystemServiceList:InitTable()
     local table = {}    
-    table[SystemIDConfig:GetTable().PokerSystem] = "bombooService/bombooService"
+    table[G_SysIDConf:GetTable().PokerSystem] = "bombooService/bombooService"
     return table
 end 
 

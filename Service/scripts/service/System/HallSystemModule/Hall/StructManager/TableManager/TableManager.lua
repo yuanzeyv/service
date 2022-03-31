@@ -12,7 +12,7 @@
 require "Tool.Class"
 local Map = require "Tool.Map"
 local skynet = require "skynet"   
-local Table = require"HallSystemModule.Hall.StructManager.Table" --大厅里面有桌子 
+local Table = require"HallSystemModule.Hall.StructManager.TableManager.Table" --大厅里面有桌子 
 local TableManager = class("TableManager") 
 function TableManager:ctor(tableInfo)   
     self:InitData(tableInfo) 

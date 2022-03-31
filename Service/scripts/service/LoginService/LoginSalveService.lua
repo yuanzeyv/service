@@ -1,5 +1,4 @@
-require "Tool.Class" 
-local strConf = require "Config.StringConfig"
+require "Tool.Class"  
 local skynet = require "skynet"
 local socket = require "skynet.socket"
 local crypt = require "skynet.crypt"  

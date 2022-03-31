@@ -1,5 +1,5 @@
- local SystemIDConfig = require("Config.SystemIDConfig").Instance()
-local netCommandConfig = require("Config.NetCommandConfig").Instance()
+require("Config.SystemIDConfig")--打开系统id配置
+require("Config.NetCommandConfig")
 local ServiceModle = require "ServiceModle.ServiceModle" 
 local AgentService = class("AgentService",ServiceModle)    
 function AgentService:Command_Login(source, uid, sid,username)--登录成功
@@ -11,7 +11,7 @@ function AgentService:Command_Login(source, uid, sid,username)--登录成功
     self._serviceHandle = skynet.self()
     --程序一上来就会寻找系统管理服务
     self._systemControlHandle = {
-        [SystemIDConfig:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
+        [G_SysIDConf:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
     }
 end 
 
@@ -52,7 +52,7 @@ function AgentService:__InitNetEventDispatch()
         pack = skynet.pack,
         unpack = skynet.unpack,
         dispatch =function(_,source,msgId,param1,param2,param3,param4,str)  
-            local FindSystem = assert(netCommandConfig:FindByIndex(msgId),"没有找到指定消息")--寻找到消息ID对应的数据信息  
+            local FindSystem = assert(G_NetCommandConf:FindByIndex(msgId),"没有找到指定消息")--寻找到消息ID对应的数据信息  
             local systemInfo = assert(self._systemControlHandle[FindSystem.systemID],"消息".. msgId.."没有找到指定的系统" )--通过系统ID查找指定系统
             skynet.send(systemInfo.handle,"client",FindSystem.cmdName,self._serviceHandle,param1,param2,param3,param4,str)  
         end 
