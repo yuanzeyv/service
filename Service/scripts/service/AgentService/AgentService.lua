@@ -33,7 +33,7 @@ function AgentService:Command_RegisterSystem(source,systemID,handle)
     self._systemControlHandle[systemID] = {handle = handle}
 end 
 
-function AgentService:Command_UnRegisterSystem(source,systemID) 
+function AgentService:Command_UnRegisterSystem(source,systemID)--断开与系统的连接
     self._systemControlHandle[systemID] = nil
 end 
 
@@ -52,7 +52,6 @@ function AgentService:__InitNetEventDispatch()
         pack = skynet.pack,
         unpack = skynet.unpack,
         dispatch =function(_,source,msgId,param1,param2,param3,param4,str)  
-            print("AAAAAAAAAAAAA",msgId)
             local FindSystem = assert(netCommandConfig:FindByIndex(msgId),"没有找到指定消息")--寻找到消息ID对应的数据信息  
             local systemInfo = assert(self._systemControlHandle[FindSystem.systemID],"消息".. msgId.."没有找到指定的系统" )--通过系统ID查找指定系统
             skynet.send(systemInfo.handle,"client",FindSystem.cmdName,self._serviceHandle,param1,param2,param3,param4,str)  

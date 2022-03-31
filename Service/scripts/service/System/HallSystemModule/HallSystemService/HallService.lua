@@ -12,25 +12,22 @@ end
 function HallService:RegisterCommand(commandTable)
 end 
 
-function HallService:Server_EnterHall(sendObj,hallIndex,param2,param3,param4,str)  
+function HallService:Server_EnterHall(sendObj,hallIndex,param2,param3,param4,str)   
     sendObj:SetCMD("Net_EnterHall")
     local userHandle = sendObj:GetUser()
     if self:IsEnterHall(userHandle) then --如果玩家已经登入了大厅的话
         sendObj:SetParam1(-2)
         return 
-    end 
-    for v,k in pairs(self._hallArray) do 
-        print(v,k,"AAAAAAAAA",hallIndex)
-    end 
+    end   
     local hallHandle = self:HallIsExist(hallIndex) 
     if not hallHandle then 
         sendObj:SetParam1(-1)
         return 
-    end  
-    local enterStatus = skynet.call(hallHandle.hallService,"lua","playerEnterHall",playHandle)--向大厅发送登入的消息
+    end   
+    local enterStatus = skynet.call(hallHandle.hallService,"lua","playerEnterHall",userHandle)--向大厅发送登入的消息
     local hallInfo = skynet.call(hallHandle.hallService,"lua","requestHallInfo")--向大厅发送登入的消息
-    self:EnterHall(playHandle,hallIndex) --玩家加入大厅   
-    sendObj:SetJson(hallInfo)
+    self:EnterHall(userHandle,hallIndex) --玩家加入大厅   
+    sendObj:SetJson(hallInfo) 
 end
 
 function HallService:Server_LeaveHall(sendObj,param1,param2,param3,param4,str) 
@@ -96,7 +93,7 @@ function HallService:EnterHall(playHandle,hallIndex)
     local hallTable = self:HallIsExist(hallIndex)
     if not hallTable or hallTable.playerList[playHandle] then 
         return false
-    end  
+    end   
     hallTable.onlineCount = hallTable.onlineCount + 1
     hallTable.playerList[playHandle] = true
     return true 

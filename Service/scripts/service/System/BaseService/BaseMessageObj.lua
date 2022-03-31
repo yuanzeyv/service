@@ -49,6 +49,7 @@ function BaseModule:SetParam(param1,param2,param3,param4,string)
 end    
 function BaseModule:Send()
     if not self._CMD then  return  end   
+    skynet.error(string.format("Message => msgID:%4d  param1:%5d   param2:%5d   param3:%5d   param4:%5d   str:%s",self._CMD,self._param1,self._param2,self._param3,self._param4,self._string == "" and "空数据" or self._string )) 
     skynet.send(self._userHandle,"lua","write",self._CMD,self._param1,self._param2,self._param3,self._param4,self._string)  
 end   
 function BaseModule:GetUser()    

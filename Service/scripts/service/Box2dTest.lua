@@ -2,7 +2,6 @@ local skynet = require "skynet"
 local b2 = require "libb2d"   --对应于teste.c中的包名  
 require "skynet.manager"
 require "Tool.Class" 
-require "Tool.Json"
 local Box2dTest = class("Box2dTest")
 function new(class,...)
     return class.new(...)

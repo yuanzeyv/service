@@ -42,9 +42,8 @@ function NetCommandConfig:InitTable()
 
     --第一个系统区域 100 - 200
     --的所有消息（这是一个房间的所有通用消息）
-    self:AddNetCommand("Net_Request_HallList",self._idTable.PokerSystem,100) --进入大厅 
-
-    -- self:AddNetCommand("Net_EnterHall",self._idTable.PokerSystem,100) --进入大厅
+    self:AddNetCommand("Net_Request_HallList",self._idTable.PokerSystem,100) --进入大厅  
+    self:AddNetCommand("Net_EnterHall",self._idTable.PokerSystem,101) --进入大厅
     -- self:AddNetCommand("Net_LeaveHall",self._idTable.PokerSystem,101) --离开大厅
     -- self:AddNetCommand("Net_RequestHallInfo",self._idTable.PokerSystem,101) --离开大厅 
     

@@ -22,10 +22,8 @@ function SystemService:Command_LoginSystem(source,playHandle)
     if self._systemPlayers[playHandle] then --如果当前角色已经进入了系统的haunt
         return -4 --重复登入
     end  
-    print("ascscac")
     --角色记录当前系统
     skynet.call(playHandle,"lua","register_system",self._manager:GetSystemID(),skynet.self())
-    print("CCc")
     self:EnterSystem(playHandle) --角色进入当前系统
     return 0 
 end
@@ -44,22 +42,7 @@ function SystemService:RegisterCommand(commandTable)
 	commandTable.login_system = handler(self,SystemService.Command_LoginSystem)--角色登入系统
 	commandTable.unregister_agent = handler(self,SystemService.Command_UnRegisterAgent) --角色离开系统
     commandTable.request_system_info = handler(self,SystemService.Command_Request_SystemInfo)
-end 
-
-function SystemService:Server_EnterHall(playHandle,msgName,sendObj,userHandle,hallIndex,param2,param3,param4,str) 
-    assert(self:HallIsExist(hallIndex),"not find hall")--没有找到这个大厅
-    local enterStatus = skynet.call(hallId,"lua","playerEnterHall",playHandle) 
-    assert(self:HallIsExist(hallIndex),"enter hall failed")--没有找到这个大厅 
-    self:EnterHall(playHandle,hallIndex) --玩家加入大厅 
-    --进入大厅后，大厅会发送消息给客户端
-end
-
-function SystemService:Server_LeaveHall(playHandle,msgName,sendObj,userHandle,param1,param2,param3,param4,str)
-    assert(self:HallIsExist(hallIndex),"not find hall")--没有找到这个大厅
-    local levelStatus = skynet.call(hallId,"lua","playerLeaveHall",playHandle)--离开时会发送消息
-    assert(self:HallIsExist(hallIndex),"leave hall failed")--没有找到这个大厅  
-    self:LeaveHall(playHandle,hallHandle)    
-end
+end  
 --请求大厅信息
 function SystemService:Server_RequestHallList(playHandle,msgName,sendObj,userHandle,param1,param2,param3,param4,str)   
     for v,k in pairs(self._hallArray) do --循环比那里当前大厅数据
@@ -69,9 +52,7 @@ function SystemService:Server_RequestHallList(playHandle,msgName,sendObj,userHan
     --向角色返回大厅的详细请求数据
     skynet.send(playHandle,"lua","write",NetCommandConfig:FindCommand(self._manager:GetSystemID(),"Net_Request_HallList_RET"),0,0,1,1,Json.Instance():Encode(hallInfo))
 end 
-function SystemService:RegisterNetCommand(serverTable)
-    serverTable.Net_EnterTable = handler(self,SystemService.Server_EnterTable)--进入桌子
-    serverTable.Net_LeaveTable = handler(self,SystemService.Server_LeaveTable)--离开桌子 
+function SystemService:RegisterNetCommand(serverTable) 
     serverTable.Net_Request_HallList = handler(self,SystemService.Server_RequestHallList)--请求大厅信息 
 end  
  

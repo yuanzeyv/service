@@ -11,7 +11,7 @@ function BaseModule:__InitData(manager,...)
     self._serviceList = self:__GetServer() 
 end
 
-function BaseModule:InitModuleData(...)
+function BaseModule:InitModuleData(...) 
 end  
 
 function BaseModule:RegisterCommand(commandTable)

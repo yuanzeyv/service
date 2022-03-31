@@ -36,9 +36,7 @@ end
 function HallSystemModule:FindNetHandle(msgName)
     local handle = nil
     for v,k in pairs(self._SystemList) do 
-        handle = k:FindService(msgName)
-        
-    print("Rnyrt asd " ,k.__cname)
+        handle = k:FindService(msgName) 
         if  handle then break end  
     end    
     return handle

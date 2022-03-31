@@ -28,10 +28,11 @@ end
 --添加一个角色
 function PlayerManager:PlayerEnterHall(userHandle)
     --assert(self._playerArray.count >= self._maxCapacity,"已经到达了大厅所能容纳的最大人员数目了")
-    if self._playerArray.count >= self._maxCapacity then 
+    if self._playerArray:Count() >= self._maxCapacity then 
         return -2
     end  
-    self._playerArray:Add(userHandle,Player.new(userHandle)) --玩家加入到管理列表
+    local player = Player.new(userHandle)
+    self._playerArray:Add(userHandle,player) --玩家加入到管理列表
     player:EnterHall() --玩家进入大厅
     return 0
 end  

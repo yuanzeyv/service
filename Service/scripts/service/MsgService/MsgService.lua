@@ -23,8 +23,7 @@ end
 function MsgService:WriteClient(fd,msg)
 	if self._connection[fd] ~= true then--当前必须连接了
 		return 
-	end
-	skynet.error(string.format("sendMsg:(%s) %s", fd,msg))
+	end   
 	socketdriver.send(fd, msg) 
 end 
 --打开一个网络监听服务
