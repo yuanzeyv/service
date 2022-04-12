@@ -12,7 +12,7 @@ function AgentService:Command_Login(source, uid, sid,username)--登录成功
     --程序一上来就会寻找系统管理服务
     self._systemControlHandle = {
         [G_SysIDConf:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
-    }
+    } 
 end 
 
 function AgentService:Command_Logout(source) 
@@ -37,13 +37,19 @@ function AgentService:Command_UnRegisterSystem(source,systemID)--断开与系统
     self._systemControlHandle[systemID] = nil
 end 
 
+function AgentService:Command_AuthSuccess(source)--登录验证成功的消息  
+    local handle = self._systemControlHandle[G_SysIDConf:GetTable().SystemManager].handle 
+    skynet.send(handle, "lua", "auth_success",self._systemControlHandle,self._userid ) --角色会把当前拥有的系统发送给系统管理，然后由系统管理判断是否需要添加
+end 
+
 function AgentService:RegisterCommand(commandTable)
 	commandTable.login             =  handler(self,AgentService.Command_Login)
 	commandTable.logout            =  handler(self,AgentService.Command_Logout)
 	commandTable.disconnect        =  handler(self,AgentService.Command_Disconnect)
 	commandTable.write             =  handler(self,AgentService.Command_Write)
-	commandTable.register_system   = handler(self,AgentService.Command_RegisterSystem)
-	commandTable.unregister_system = handler(self,AgentService.Command_UnRegisterSystem)
+	commandTable.register_system   =  handler(self,AgentService.Command_RegisterSystem)
+	commandTable.unregister_system =  handler(self,AgentService.Command_UnRegisterSystem)
+	commandTable.auth_success      =  handler(self,AgentService.Command_AuthSuccess)--客户端在正在连接成功时的调用消息 
  end 
 function AgentService:__InitNetEventDispatch() 
     skynet.register_protocol {
@@ -69,3 +75,5 @@ function AgentService:InitServerData(...)
 end    
 
 local AgentService = AgentService.new()
+ 
+

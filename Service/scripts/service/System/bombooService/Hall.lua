@@ -1,6 +1,6 @@
 require "Tool.Class"
 local skynet = require "skynet"     
-local baseHall = require "HallSystemModule.HallFacade"
+local baseHall = require "Template.Hall.Hall.HallFacade"
 local Hall = class("Hall",baseHall)     
 function Hall:InitServiceData(tableInfo)  
     self.super:InitServiceData(tableInfo)  

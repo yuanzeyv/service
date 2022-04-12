@@ -1,29 +1,27 @@
-require "Tool.Class"  
 local netpack = require "skynet.netpack"
-local skynet = require "skynet"
 local crypt = require "skynet.crypt"
 local socketdriver = require "skynet.socketdriver"  
 local MsgExecuteFinal = require "MsgService.MsgExecuteFinal" 
 local b64encode = crypt.base64encode
 local b64decode = crypt.base64decode
 local MsgMediator = class("MsgMediator")   
-function MsgMediator:GetUserName(uid, subid)
-	return string.format("%s@%s#%s", b64encode(uid), b64encode(self._MsgServiceObj:GetName()), b64encode(tostring(subid)))
+function MsgMediator:GetUserName(uid, subid)--根据用户名称 客户端记录的subid 和 服务名称组合为一个专属名称
+	return string.format("%s@%s#%s", b64encode(uid), b64encode(self._MsgServiceObj:GetServiceName()), b64encode(tostring(subid)))
 end
 
 function MsgMediator:GetIp(username)
-	local u = self._userOnline[username]
+	local u = self._userOnline[username]--用户连接的数据信息
 	if u and u.fd then
 		return u.ip
 	end
 end
 
-function MsgMediator:Logout(username)
-	local u = self._userOnline[username]--首先查询当前对应用户名的用户
-	self._userOnline[username] = nil --设置为空
-	if u.fd then--如果拥有fd
-		self._MsgServiceObj:Closeclient(u.fd)--关闭这个客户端连接
-		self._connection[u.fd] = nil--设置连接为空
+function MsgMediator:Logout(username)--登出
+	local u = self._userOnline[username]
+	self._userOnline[username] = nil 
+	if u.fd then
+		self._MsgServiceObj:Closeclient(u.fd)
+		self._connection[u.fd] = nil
 	end
 end
 
@@ -44,7 +42,7 @@ function MsgMediator:Write(username,msg)--写一个数据
 	self._MsgServiceObj:WriteClient(u.fd,string.pack(">I2",#msg) .. msg ) --写数据
 end
 
-function MsgMediator:Command_Login(source,uid) --login校验成功后，会调用登录命令 uid为用户账号
+function MsgMediator:Command_Login(source,uid) --login校验成功后，会调用登录命令 uid为用户账号 
 	return self._MsgExecuteObj:LoginHandler(uid)
 end 
 function MsgMediator:Command_Write(source,username,msg) 
@@ -93,29 +91,34 @@ end
 function MsgMediator:DoAuth(fd, message, addr)
 	local username, index = string.match(message, "([^:]*):([^:]*)") --获取到用户名称 
 	index = tonumber(index)--这个index可用用来校验是否登录成功 目前不用
-
-	assert(index,"400 Bad Request") 
-	local u = self._userOnline[username] 
-	assert(u ,"404 User Not Found")     
+	if not index then
+		return G_ErrorConf.ConnectServerIndexError
+	end  
+	local u = self._userOnline[username] --查询用户是否存在 
+	if not u then 
+		return G_ErrorConf.UserNotLoggedIn
+	end   
 	u.fd = fd
 	u.ip = addr
-	self._connection[fd] = u
-	return "200 OK" 
+	self._connection[fd] = u 
+	self._MsgExecuteObj:AuthSuccess(username)--执行验证成功的功能，验证成功后 会向角色发送消息
+	return G_ErrorConf.ExecuteSuccess
 end 
 
 function MsgMediator:Auth(fd, addr, msg, sz)
 	local message = netpack.tostring(msg, sz)--解析当前的网络包
-	local ok, result = pcall(self.DoAuth,self, fd, message, addr)  --调用解析
-	if not ok then 
-		skynet.error(result)--输出错误日志  
-		self._MsgServiceObj:CloseClient(fd)--验证失败关闭连接
-	end  
-end
+	result = self:DoAuth(fd,message,addr) 
+	if result ~= G_ErrorConf.ExecuteSuccess then 
+		skynet.error(fd .. " Auth Result:" .. result)--输出错误日志  
+		self._MsgServiceObj:CloseClient(fd)--验证失败关闭连接 
+		return
+	end 
+end               
 
 function MsgMediator:MessageDispose(fd, msg, sz) --如果收到了消息
-	local addr = self._handshake[fd]--首先判断当前是否已经连接了
-	if addr then--如果当前需要验证的话
-		self:Auth(fd,addr,msg,sz)--开始验证
+	local addr = self._handshake[fd]--首次连接后的握手消息
+	if addr then
+		self:Auth(fd,addr,msg,sz)
 		self._handshake[fd] = nil
 	else    
 		self:Request(fd, msg, sz)
@@ -123,16 +126,16 @@ function MsgMediator:MessageDispose(fd, msg, sz) --如果收到了消息
 end
 
 function MsgMediator:OpenListenHandle(source)
-	local servername = self._MsgServiceObj:GetName()  --调用上一级的 注册服务
+	local servername = self._MsgServiceObj:GetServiceName()  --调用上一级的 注册服务
     skynet.call(self:GetLoginHandle(), "lua", "register_gate", servername, skynet.self())--调用loginService的注册消息，同样注册一下
 	return self._MsgExecuteObj:RegisterHandler(servername)
 end 
 function MsgMediator:CloseListenHandle(source) 
-	local servername = self._MsgServiceObj:GetName()  --调用上一级的 注册服务
+	local servername = self._MsgServiceObj:GetServiceName()  --调用上一级的 注册服务
 	return self._MsgExecuteObj:UnregisterHandler(servername)
 end  
 function MsgMediator:ConnectDispose(fd, addr)
-	self._handshake [fd] = addr --连接会把握手给打开
+	self._handshake[fd] = addr --连接会把握手给打开
 	self._MsgServiceObj:Openclient(fd)--并且打开客户端
 end 
 

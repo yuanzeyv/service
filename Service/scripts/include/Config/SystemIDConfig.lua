@@ -6,8 +6,10 @@ function SystemIDConfig:ctor()
 end  
 function SystemIDConfig:InitTable()
     local table = {} 
-    table.SystemManager = 1
-    table.PokerSystem = 2  
+    table.SystemManager = 1 --系统管理系统
+    table.PlayerSystem = 2  --角色管理系统
+
+    table.PokerSystem = 3   --扑克系统
     return table
 end 
 function SystemIDConfig:GetTable()  

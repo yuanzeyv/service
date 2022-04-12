@@ -29,10 +29,7 @@ function NetCommandConfig:InitTable()
     self:AddNetCommand("Net_LoginSystem"   ,self._idTable.SystemManager,1) --登入系统 
     self:AddNetCommand("Net_LoginOutSystem",self._idTable.SystemManager,2) --登出系统 
     self:AddNetCommand("Net_RequestSystem",self._idTable.SystemManager, 3) --请求系统消息
-    
-    self:AddNetCommand("Net_LoginSystem_RET"   ,self._idTable.SystemManager,4) --登入系统 
-    self:AddNetCommand("Net_LoginOutSystem_RET"   ,self._idTable.SystemManager,5) --登入系统 
-    self:AddNetCommand("Net_RequestSystem_RET",self._idTable.SystemManager, 6) --请求系统消息 
+    self:AddNetCommand("Net_SystemInitSuccess",self._idTable.SystemManager, 4) --请求系统消息
 
     --第一个系统区域 100 - 200
     --的所有消息（这是一个房间的所有通用消息）
@@ -48,6 +45,11 @@ function NetCommandConfig:InitTable()
     self:AddNetCommand("Net_EnterGame",self._idTable.PokerSystem,109) --玩家进入游戏
     self:AddNetCommand("Net_LeaveGame",self._idTable.PokerSystem,110) --玩家离开游戏
     self:AddNetCommand("Net_LookGame",self._idTable.PokerSystem,111) --离开大厅  
+    self:AddNetCommand("Net_ChangeMaster",self._idTable.PokerSystem,112) --更换房主 
+
+
+    --玩家系统的系统消息区域 200 - 250
+    self:AddNetCommand("Net_Request_PlayerInfo",self._idTable.PlayerSystem,200) --向玩家返回玩家的详细数据信息
      
 end 
 --判断命令是否存在

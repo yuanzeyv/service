@@ -1,13 +1,10 @@
-require "Tool.Class" 
-local skynet = require "skynet"  
 local MsgExecuteFinal = class("MsgExecuteFinal")
 function MsgExecuteFinal:ctor(loginServerHandle)  
     self:InitServerData(loginServerHandle)
 end 
 
 function MsgExecuteFinal:InitServerData(msgMediator)
-    self._msgMediatorObj =  assert(msgMediator,"处理中介对向传入不正确") --接收传入的登录服务
-
+    self._msgMediatorObj =  assert(msgMediator,"处理中介对向传入不正确") --接收传入的登录服务 
     self._agentHandles = {}  --当前已经登入的用户 服务句柄列表
     self._subid = 0 --当前的subid 
 end
@@ -20,7 +17,11 @@ end
 function MsgExecuteFinal:AdditionAgent(uid,subid,username)
     local agent =skynet.newservice("AgentService")
     skynet.call(agent,"lua","login",uid,subid,username )
-    self._agentHandles[username] = agent
+    local table = {}
+    table.handle = agent
+    table.uid = uid
+    self._agentHandles[username] = table
+    
 end
 
 function MsgExecuteFinal:LoginHandler(uid) --传入用户账号
@@ -32,13 +33,21 @@ function MsgExecuteFinal:LoginHandler(uid) --传入用户账号
     return subId
 end 
 
-function MsgExecuteFinal:LogoutHandler (uid, subid)--掉线
+function MsgExecuteFinal:LogoutHandler(uid, subid)--掉线
     skynet.error("logout_handler invoke", uid, subid)
     local username = self._msgMediatorObj:GetUserName(uid, subid )
-    skynet.call(self._agentHandles[username],"lua","logout",uid,subid)
+    local userTable = assert(self._agentHandles[username],"not found user table")
+    skynet.call( userTable.handle ,"lua","logout",uid,subid)
     self._agentHandles[username] = nil
     self._msgMediatorObj:Logout(username) 
 end
+
+--验证成功的情况下，向当前的用户发送初始化命令 
+function MsgExecuteFinal:AuthSuccess(username)--执行验证成功的功能，验证成功后 会向角色发送消息
+    local userTable = assert(self._agentHandles[username],"not found user table")
+    skynet.error("Auth Success",username)    
+    skynet.call(userTable.handle,"lua","auth_success",uid,subid)  
+end 
 
 function MsgExecuteFinal:KickHandler(uid, subid)--踢人
     skynet.error("kick_handler invoke", uid, subid) 
