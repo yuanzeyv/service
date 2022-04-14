@@ -6,20 +6,20 @@ local MsgMediator = require "MsgService.MsgMediator"
 local MsgService = class("MsgService",ServiceModle)   
 function MsgService:InitServerData(serverName)    
 	self._serverName = assert(serverName,"not input server name") 
-	self._serverList = self:GetServerList() 
-	self._nodelay = false --大数据包   
+
+	self._socketHandleList = self:GetSocketHandleList()  
 	self._socket = nil    --被监听的socket
-	self._maxclient	= nil --最大被监听的数目
-
+	self._nodelay = false --大数据包   
+	self._maxclient	= nil --最大被监听的数目 
 	self._queue	= nil	  --消息执行队列
-	self._connection = {}--true : connected   nil : closed  false : close read   
-
-	self._msgMediatorObj =  MsgMediator.new(self)  --消息处理Mediator
-
+	self._connection = {} --true : connected   nil : closed  false : close read    
+	 
+	self._msgMediatorObj =  MsgMediator.new(self)  --消息处理Mediator 
 	self._client_number=0 --当前监听的数目 
 end     
+--获取到当前服务器的名字
 function MsgService:GetServiceName()
-	return self._serverName
+	return self._serverName 
 end 
 function MsgService:Server_DispatchMsg(fd, msg, sz) --消息派发
 	if not self._connection[fd] then
@@ -78,7 +78,7 @@ function MsgService:Server_ClientWarning(fd, size)
 	self._msgMediatorObj:WarningDispose(fd, size) 
 end
 
-function MsgService:GetServerList()
+function MsgService:GetSocketHandleList()
     local serverList = {}   
 	serverList.more = 	 handler(self,self.Server_DispatchQueue) 
 	serverList.data = 	 handler(self,self.Server_DispatchMsg)
@@ -99,7 +99,7 @@ function MsgService:InitNetDispatch()
 		dispatch = function (_, _, q, type, ...)
 			self._queue = q
 			local fd = ... 
-			local _ = type and self._serverList[type](...)  
+			local _ = type and self._socketHandleList[type](...)  
 		end
 	}   
 	
@@ -158,6 +158,7 @@ end
 function MsgService:FindCommandHandle(command)
 	return  self._commandList[command]  or self._msgMediatorObj:FindCommand(command)
  end
+  
 --初始化系统
 function MsgService:InitSystem()   
 	self:InitNetDispatch()

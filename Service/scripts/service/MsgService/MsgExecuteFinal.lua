@@ -1,3 +1,5 @@
+--一个服务器应该具有 断开连接  用户登入 用户登出 下线  发送消息 接收消息  断线重连
+
 local MsgExecuteFinal = class("MsgExecuteFinal")
 function MsgExecuteFinal:ctor(loginServerHandle)  
     self:InitServerData(loginServerHandle)
@@ -54,7 +56,6 @@ function MsgExecuteFinal:KickHandler(uid, subid)--踢人
     local username = self._msgMediatorObj:GetUserName(uid, subid )
     if not self._agentHandles[username] then return end 
     self._msgMediatorObj:Logout(username) 
-    skynet.call(self._loginservice,"lua","logout",uid,subid)
     self._agentHandles[username] = nil
 end
 
@@ -68,10 +69,10 @@ function MsgExecuteFinal:AnalysisMsg(msg)--解析一条消息
     return msgtable
 end 
 
-function MsgExecuteFinal:RequestHandler(username, msg)--处理消息时调用 
+function MsgExecuteFinal:RequestHandler(username, msg)--处理消息时调用  
     local msgTable = self:AnalysisMsg(msg) 
     assert(msgTable,"message fromat error")        
-    return skynet.send(self._agentHandles[username],"client",table.unpack(msgTable)) 
+    return skynet.send(self._agentHandles[username].handle,"client",table.unpack(msgTable)) 
 end   
 
 function MsgExecuteFinal:RegisterHandler(name)--开始注册时调用

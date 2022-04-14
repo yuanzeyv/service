@@ -1,6 +1,5 @@
 require "Tool.Class" 
 local Player = class("Player")    
-Player.HALL_ACTION_STATUS =  {IDLE = 0 , BUS = 1} --一个玩家只有两种状态 大厅里 桌子里
 function Player:ctor(uid)    
     self:InitData(uid) 
 end

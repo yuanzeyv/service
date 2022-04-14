@@ -13,9 +13,7 @@ end
 function LoginService:RegisterCommand(commandTable) 
 	commandTable.register_gate =  handler(self,self.Command_register_gate)  
 end  
-
-function LoginService:__InitNetEventDispatch() --不监听网络消息
-end
+ 
 
 function LoginService:InitServerData(port,name,host,instance)   
 	self._port  = assert(tonumber(port),"没有填写端口信息")
@@ -45,6 +43,7 @@ function LoginService:GetNextSlave()
 end  
  
 function LoginService:Write(errorCode, fd,addText)  
+	print(errorCode)
 	local sendText = string.format("%d %s",errorCode,addText) 
 	assert(socket.write(fd, sendText),G_ErrorConf.SocketDisConnect) --如果发送失败的话
 end    
@@ -59,11 +58,11 @@ end
 function LoginService:Accept(fd,addr)  
 	local slave = self:GetNextSlave()
 	local ok, server, uid = skynet.call(slave, "lua","login_virify",fd, addr)
-	local code = server 
+	local code = server  
 	if not ok then--如果当前返回为假
 		self:Write(code,fd)--向客户端发送错误码
 		error( code )--打印错误原因
-	end  
+	end   
 	local errorStatus = G_ErrorConf.ExecuteSuccess
 	--程序不允许多用户同时登陆
 	if self._userLogin[uid] then --如果当前用户正在执行登录操作
@@ -73,11 +72,11 @@ function LoginService:Accept(fd,addr)
 	end 
 	self._userLogin[uid] = true--设置当前用户正在登录
 	local ok, subID = pcall(self.ServerHandle_login,self, server, uid)  --获取到当前的回调验证
-	self._userLogin[uid] = nil --登录结束
+	self._userLogin[uid] = nil --登录结束 
 	if ok then --如果执行函数成功 
 		self:Write(errorStatus,fd,crypt.base64encode(subID or "" ).."\n")  --base64(subid)
 		skynet.error("login Success:"..uid) 
-	else  
+	else   
 		errorStatus = subID
 		self:Write(errorStatus,fd)--发送进入的错误
 		error(errorStatus)--打印错误原因

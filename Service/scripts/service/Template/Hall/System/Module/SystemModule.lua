@@ -4,7 +4,7 @@ function SystemModule:InitModuleData(tableData)
     self._systemPlayers = {}--当前登入系统的角色信息 
 end   
 --需要重写 用于获取系统信息
-function SystemModule:Command_RequestSystem(source) 
+function SystemModule:Command_RequestSimpleSystemMsg(source) 
     local SystemInfo = {}  
     SystemInfo.id = self._manager:GetSystemID()
     SystemInfo.name = self._manager:GetSystemName()
@@ -51,7 +51,7 @@ end
 function SystemModule:RegisterCommand(commandTable)   
 	commandTable.enter_system   = handler(self,SystemModule.Command_EnterSystem)
 	commandTable.leave_system   = handler(self,SystemModule.Command_LeaveSystem)
-	commandTable.request_system = handler(self,SystemModule.Command_RequestSystem) 
+	commandTable.request_simple_system_msg = handler(self,SystemModule.Command_RequestSimpleSystemMsg)  
 end  
 function SystemModule:RegisterNetCommand(serverTable) 
 end  

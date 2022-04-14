@@ -2,10 +2,9 @@ local Player = require "PlayerInfoService.Player"
 local AgentDataBaseOper = require "PlayerInfoService.AgentDataBaseOper" 
 local BaseService = require "Template.Service.BaseService"     
 local PlayerInfoService = class("PlayerInfoService",BaseService)  
-
-function PlayerInfoService:Command_EnterSystem(source,userHandle,uid)  
-    if self._playerList[uid] then 
-        skynet.error("data isexist system error")
+function PlayerInfoService:Command_EnterSystem(source,userHandle,uid)   
+    if self._playerList[userHandle] then 
+        return G_ErrorConf.RepetSystem
     end  
     local player = Player.new(uid) 
     player:SetUserData(self._database:GetUserInfo(uid))
@@ -32,28 +31,31 @@ function PlayerInfoService:Command_RequestSystem(source,userHandle)
     end  
     local errorCode = playerInfo:GetErrorCode() --获取到错误码
     if errorCode ~= G_ErrorConf.ExecuteSuccess then 
-        sendObj:Send(G_ErrorConf.errorCode) 
+        sendObj:Send(errorCode) 
         return 
     end 
     sendObj:SetJson(playerInfo:GetUserData())--查询当前的角色信息 
     sendObj:Send() 
 end  
+function PlayerInfoService:Command_RequestSimpleSystemMsg(source,userHandle)  
+    local SystemInfo = {}  
+    SystemInfo.id = self:GetSystemID()
+    SystemInfo.name = self:GetSystemName()
+    return SystemInfo   
+end  
 
+function PlayerInfoService:GetSystemName()
+    return "玩家管理系统"
+end 
 function PlayerInfoService:RegisterCommand(commandTable)     
-	commandTable.enter_system   = handler(self,PlayerInfoService.Command_EnterSystem)
+	commandTable.enter_system   = handler(self,PlayerInfoService.Command_EnterSystem) 
 	commandTable.leave_system   = handler(self,PlayerInfoService.Command_LeaveSystem)
 	commandTable.request_system = handler(self,PlayerInfoService.Command_RequestSystem) 
+	commandTable.request_simple_system_msg = handler(self,PlayerInfoService.Command_RequestSimpleSystemMsg) 
 end 
-function PlayerInfoService:RegisterNetCommand(serverTable) 
-end    
- 
 --初始化数据
 function PlayerInfoService:InitServerData(...)    
     self._playerList = {} 
     self._database = AgentDataBaseOper.new()
 end  
- 
---初始化系统
-function PlayerInfoService:InitSystem()    
-end   
 local PlayerInfoService = PlayerInfoService.new(G_SysIDConf:GetTable().PlayerSystem) --这是角色系统

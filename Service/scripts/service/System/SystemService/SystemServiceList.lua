@@ -5,9 +5,10 @@ function SystemServiceList:ctor()
     self._Table = self:InitTable()
 end   
 function SystemServiceList:InitTable()
-    local table = {}    
-    table[G_SysIDConf:GetTable().PokerSystem] =  {path = "bombooService/bombooService"        ,autoLogin = false,requestData = true}
-    table[G_SysIDConf:GetTable().PlayerSystem] = {path = "PlayerInfoService/PlayerInfoService",autoLogin = true ,requestData = true}
+    local table = {}     
+    table[G_SysIDConf:GetTable().PokerSystem] =  {path = "bombooService/bombooService"        ,autoLogin = false,requestData = true,}
+    table[G_SysIDConf:GetTable().PlayerSystem] = {path = "PlayerInfoService/PlayerInfoService",autoLogin = true ,requestData = true,}
+    table[G_SysIDConf:GetTable().TimeSystem] = {path = "TimeDataService/TimeDataService",autoLogin = true ,requestData = true,}
     return table
 end 
 

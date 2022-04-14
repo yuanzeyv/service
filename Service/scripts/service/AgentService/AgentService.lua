@@ -17,6 +17,17 @@ end
 
 function AgentService:Command_Logout(source) 
     assert(self._gate,"用户未初始化就退出") 
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
+    print("正在处理 将角色踢下线")
     skynet.call(self._gate, "lua", "logout", self._userid, self._subid) 
     skynet.exit()
 end 
@@ -57,7 +68,7 @@ function AgentService:__InitNetEventDispatch()
         id = skynet.PTYPE_CLIENT,
         pack = skynet.pack,
         unpack = skynet.unpack,
-        dispatch =function(_,source,msgId,param1,param2,param3,param4,str)  
+        dispatch =function(_,source,msgId,param1,param2,param3,param4,str)   
             local FindSystem = assert(G_NetCommandConf:FindByIndex(msgId),"没有找到指定消息")--寻找到消息ID对应的数据信息  
             local systemInfo = assert(self._systemControlHandle[FindSystem.systemID],"消息".. msgId.."没有找到指定的系统" )--通过系统ID查找指定系统
             skynet.send(systemInfo.handle,"client",FindSystem.cmdName,self._serviceHandle,param1,param2,param3,param4,str)  

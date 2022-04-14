@@ -39,7 +39,8 @@ function G_ErrorConf:InitTable(table)
     table.ServerNotSelect             = -107 --未选择区服
 
     --玩家系统的段 200 - 300
-    table.PlayerSys_UserNotExist      = -200 --玩家不存在
+    table.PlayerSys_UserNotExist      = -200 --玩家不存在 
+    --
 
 
     --500 - 1000 是大厅相关的

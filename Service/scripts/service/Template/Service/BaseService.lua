@@ -3,7 +3,7 @@ local ServiceModle = require "Template.ServiceModle.ServiceModle"
 local BaseService = class("BaseService",ServiceModle)       
 function BaseService:__InitData(systemID,...)
     BaseService.super.__InitData(self,...)   
-    self._systemID = assert(systemID,"system is null " .. self.__cname)   
+    self._systemID = assert(tonumber(systemID),"system is null " .. self.__cname)   
 end
 --获取到系统ID
 function BaseService:GetSystemID()
@@ -21,8 +21,8 @@ function BaseService:__InitNetEventDispatch()
                 self:NotNetDispose(source,msgName,userHandle,param1,param2,param3,param4,str)
                 return  
             end   
-            local sendObj = BaseMessageObj.new(self,userHandle,msgName,source) 
-            sendObj:Send(handle(sendObj,userHandle,param1,param2,param3,param4,str))
+            local sendObj = BaseMessageObj.new(self,userHandle,msgName,source)  
+            sendObj:Send( handle(sendObj,userHandle,param1,param2,param3,param4,str) )
         end
     }
 end 
