@@ -55,6 +55,7 @@ function NetCommandConfig:InitTable()
     --时钟系统，时钟系统里面有玩家，玩家需要将自己注册到其中，时钟系统维护所有登入的玩家并检测玩家心跳 
     self:AddNetCommand("Net_Heartbeat",sysTable.TimeSystem,300) --向玩家返回玩家的详细数据信息  
     self:AddNetCommand("Net_Request_Heartbeat",sysTable.TimeSystem,301) --向玩家返回玩家的详细数据信息  
+    self:AddNetCommand("Net_Player_Net_Break",sysTable.TimeSystem,302)  --玩家断线网络请求
 end 
 --判断命令是否存在
 function NetCommandConfig:FindByIndex(index) 

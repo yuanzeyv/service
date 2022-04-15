@@ -51,7 +51,7 @@ function BaseModule:Send(errCode)
     if errCode then 
         self:SetErrCode(errCode)
     end 
-    --skynet.error(string.format("(%d)Message => msgID:%-4d param1:%-4d param2:%-4d param3:%-4d param4:%-4d str:%s", self._userHandle,self._CMD,self._param1,self._param2,self._param3,self._param4,self._string == "" and "空数据" or self._string )) 
+    skynet.error(string.format("(%d)Message => msgID:%-4d param1:%-4d param2:%-4d param3:%-4d param4:%-4d str:%s", self._userHandle,self._CMD,self._param1,self._param2,self._param3,self._param4,self._string == "" and "空数据" or self._string )) 
     skynet.send(self._userHandle,"lua","write",self._CMD,self._param1,self._param2,self._param3,self._param4,self._string)  
 end   
 function BaseModule:GetUser()    

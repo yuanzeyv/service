@@ -8,28 +8,18 @@ function AgentService:Command_Login(source, uid, sid,username)--登录成功
     self._userid = uid
     self._subid  = sid  
     self._username = username 
+    --self._surviveStatus = 1 --1代表健康 2代表断网 3代表正在退出系统
+    self._netStatus = true --网络连接是否正常 false代表断开连接 true代表已连接
     self._serviceHandle = skynet.self()
     --程序一上来就会寻找系统管理服务
     self._systemControlHandle = {
         [G_SysIDConf:GetTable().SystemManager]= {handle = skynet.localname(".SystemManager")}
     } 
-end 
+end  
 
-function AgentService:Command_Logout(source) 
-    assert(self._gate,"用户未初始化就退出") 
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    print("正在处理 将角色踢下线")
-    skynet.call(self._gate, "lua", "logout", self._userid, self._subid) 
-    skynet.exit()
+--退出时一定会退出当前的服务器
+function AgentService:Command_Logout(source)  
+    skynet.send(self._gate, "lua", "logout", self._username) --登出的实际意义是断网
 end 
 
 function AgentService:Command_Disconnect(source) --gate发现client的连接断开了，会发disconnect消息过来这里不要登出 
@@ -37,6 +27,10 @@ function AgentService:Command_Disconnect(source) --gate发现client的连接断�
 end 
 
 function AgentService:Command_Write(source,...)    
+    if not self._netStatus then 
+        skynet.error(source,"网络连接已断开,消息被截留")
+        return 
+    end 
     skynet.call(self._gate, "lua", "write",self._username,self:PackMsg(...))
 end
 
@@ -52,10 +46,14 @@ function AgentService:Command_AuthSuccess(source)--登录验证成功的消息
     local handle = self._systemControlHandle[G_SysIDConf:GetTable().SystemManager].handle 
     skynet.send(handle, "lua", "auth_success",self._systemControlHandle,self._userid ) --角色会把当前拥有的系统发送给系统管理，然后由系统管理判断是否需要添加
 end 
+function AgentService:Command_SetNetStatus(source,netStatus)--登录验证成功的消息   
+    self._netStatus = netStatus
+end 
 
 function AgentService:RegisterCommand(commandTable)
 	commandTable.login             =  handler(self,AgentService.Command_Login)
-	commandTable.logout            =  handler(self,AgentService.Command_Logout)
+	commandTable.logout            =  handler(self,AgentService.Command_Logout)--1是踢人 
+	commandTable.setNetStatus      =  handler(self,AgentService.Command_SetNetStatus)--设置当前用户的网络连接状态 
 	commandTable.disconnect        =  handler(self,AgentService.Command_Disconnect)
 	commandTable.write             =  handler(self,AgentService.Command_Write)
 	commandTable.register_system   =  handler(self,AgentService.Command_RegisterSystem)

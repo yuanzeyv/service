@@ -9,7 +9,7 @@ function Player:InitData(userHandle)
     self._canAuth = true--是否需要验证（用户是否是退出状态了）
     self._timingTime = skynet.time() --角色创建出来后就开始计时
     --一个小周期内容许收到的次数（判断是否失去了连接，如果小周期有误，向客户端发送重连请求）
-    self._detectionUnit = 5 --五秒  客户端5秒钟一发  
+    self._detectionUnit = 20 --五秒  客户端5秒钟一发  
     self._heartbeatCount = 0 
 end
 
@@ -37,5 +37,8 @@ end
 function Player:GetNeedAuth()
     return self._canAuth 
 end  
-
+--获取到userHandle
+function Player:GetUserHandle()
+    return self._userHandle
+end  
 return Player  

@@ -42,8 +42,7 @@ function LoginService:GetNextSlave()
 	return self._slave[index]
 end  
  
-function LoginService:Write(errorCode, fd,addText)  
-	print(errorCode)
+function LoginService:Write(errorCode, fd,addText)   
 	local sendText = string.format("%d %s",errorCode,addText) 
 	assert(socket.write(fd, sendText),G_ErrorConf.SocketDisConnect) --如果发送失败的话
 end    

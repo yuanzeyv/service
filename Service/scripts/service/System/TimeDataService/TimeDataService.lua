@@ -37,6 +37,10 @@ function TimeDataService:Command_RequestSimpleSystemMsg(source,userHandle)
     return SystemInfo   
 end  
 
+function TimeDataService:Command_HeartbeatSwitch(source,userHandle,status)  
+    local playerInfo = assert(self._playerList[userHandle],"玩家未加入系统") 
+    playerInfo:SetNeedAuth(status) --设置验证开关  
+end   
 function TimeDataService:GetSystemName()
     return "时钟管理系统"
 end 
@@ -44,39 +48,43 @@ function TimeDataService:RegisterCommand(commandTable)
 	commandTable.enter_system   = handler(self,TimeDataService.Command_EnterSystem) 
 	commandTable.leave_system   = handler(self,TimeDataService.Command_LeaveSystem)
 	commandTable.request_system = handler(self,TimeDataService.Command_RequestSystem) 
+	commandTable.heartbeat_switch = handler(self,TimeDataService.Command_HeartbeatSwitch) 
 	commandTable.request_simple_system_msg = handler(self,TimeDataService.Command_RequestSimpleSystemMsg) 
 end 
-
---请求大厅信息 
+--收到心跳请求
 function TimeDataService:Server_Heartbeat(sendObj,userHandle,param1,param2,param3,param4,str)    
     sendObj:SetCMD("Net_Heartbeat")  
     local playerInfo = self._playerList[userHandle] --取得当前角色的详细信息
     if not playerInfo then 
         return G_ErrorConf.PlayerSys_UserNotExist
     end
-    print("客户端发送了心跳 当前在10秒内接收到的心跳包个数:",playerInfo:Heartbeat(),skynet.time())
+    --print("客户端发送了心跳 当前在10秒内接收到的心跳包个数:",playerInfo:Heartbeat(),skynet.time())
+end 
+--断网回调
+function TimeDataService:NetBreak(userHandle)
+    local playerInfo = assert(self._playerList[userHandle],"玩家未加入系统")  
+    skynet.send(userHandle,"lua","logout")  --直接对玩家发送断网操作
+end 
+--收到断网请求
+function TimeDataService:Server_Player_Net_Break(sendObj,userHandle,param1,param2,param3,param4,str)     
+    self:NetBreak(userHandle) --断网之后
 end 
 
 function TimeDataService:RegisterNetCommand(serverTable)
     serverTable.Net_Heartbeat = handler(self,TimeDataService.Server_Heartbeat)--进入桌子 
+    serverTable.Net_Player_Net_Break = handler(self,TimeDataService.Server_Player_Net_Break) 
 end  
- 
 
 function TimeDataService:HeartbeatAuth()    
-    local timeNow = skynet.time() 
-    --local anomlayList = {} 
-    for v,k in pairs(self._playerList) do  
-        local ret  = k:HeartbeatAuth(timeNow)  
+    local timeNow = skynet.time()  
+    for v,k in pairs(self._playerList) do--循环遍历所有玩家
+        local ret  = k:HeartbeatAuth(timeNow) --判断当前是否出现了异常
         if ret == 0 then 
-            print("用户" .. v .. "心跳异常 警告",skynet.time()) 
-            --anomlayList[v] = k  
-            k:SetNeedAuth(false)  
-            return skynet.call(v,"lua","logout") 
+            print("用户" .. v .. "心跳异常 警告",skynet.time())  
+            k:SetNeedAuth(false)   
+            self:NetBreak(v) --断网
         end  
-    end   
-    --for v,k in pairs(anomlayList) do 
-    --    self._playerList[v] = nil 
-    --end 
+    end    
     skynet.timeout(50, handler(self,TimeDataService.HeartbeatAuth))--每一百毫秒计算一次
 end   
 --初始化数据
@@ -86,6 +94,6 @@ function TimeDataService:InitServerData(...)
 end  
 --初始化系统
 function TimeDataService:InitSystem()   
-    skynet.timeout(10, handler(self,TimeDataService.HeartbeatAuth))--每一百毫秒计算一次
+    skynet.timeout(50, handler(self,TimeDataService.HeartbeatAuth))--每一百毫秒计算一次
 end     
 local TimeDataService = TimeDataService.new(...) 
