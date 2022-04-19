@@ -58,7 +58,8 @@ function TimeDataService:Server_Heartbeat(sendObj,userHandle,param1,param2,param
     if not playerInfo then 
         return G_ErrorConf.PlayerSys_UserNotExist
     end
-    --print("客户端发送了心跳 当前在10秒内接收到的心跳包个数:",playerInfo:Heartbeat(),skynet.time())
+    playerInfo:Heartbeat()   
+    sendObj:SetParam4(math.floor(skynet.time() * 1000))  
 end 
 --断网回调
 function TimeDataService:NetBreak(userHandle)

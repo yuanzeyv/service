@@ -26,12 +26,13 @@ function AgentService:Command_Disconnect(source) --gate发现client的连接断�
     skynet.error(string.format("disconnect"))
 end 
 
-function AgentService:Command_Write(source,...)    
+function AgentService:Command_Write(source,msgId,param1,param2,param3,param4,str)    
     if not self._netStatus then 
         skynet.error(source,"网络连接已断开,消息被截留")
         return 
     end 
-    skynet.call(self._gate, "lua", "write",self._username,self:PackMsg(...))
+    skynet.error(string.format("(%d)Message => msgID:%-4d param1:%-4d param2:%-4d param3:%-4d param4:%-4d str:%s", skynet.self(),msgId,param1,param2,param3,param4,str == "" and "空" or str )) 
+    skynet.call(self._gate, "lua", "write",self._username,self:PackMsg(msgId,param1,param2,param3,param4,str))
 end
 
 function AgentService:Command_RegisterSystem(source,systemID,handle)   
@@ -74,7 +75,7 @@ function AgentService:__InitNetEventDispatch()
     }
 end
 function AgentService:PackMsg(msgId,param1,param2,param3,param4,str)
-    return string.pack("<I4 i4 i4 i4 i4 s4",msgId,param1 or 0 ,param2 or 0 ,param3 or 0 ,param4 or 0 ,str or "")
+    return string.pack("<I4 i4 i4 i4 i8 s4",msgId,param1 or 0 ,param2 or 0 ,param3 or 0 ,param4 or 0 ,str or "")
 end   
 function AgentService:InitServerData(...)
     self._gate   = nil

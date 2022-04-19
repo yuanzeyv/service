@@ -149,11 +149,12 @@ end
 
 function MsgMediator:SocketErrorHandle (fd,msg) --错误的消息处理 
 	skynet.error(string.format("(%d)对应的套接字，进入了SocketError,程序即将退出socket",fd) )   
-	local netInfo = assert(self._netConnection[fd],"连接信息不存在")
+	local netInfo = self._netConnection[fd]
 	local username = netInfo:GetUserName() 
 	if username then--断网回调
 		self._MsgExecuteObj:ErrorHandler(username)
-	end   
+	else 
+	end 
 end
 
 function MsgMediator:SocketWarningHandle(fd)

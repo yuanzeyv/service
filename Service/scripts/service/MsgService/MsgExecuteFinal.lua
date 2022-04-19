@@ -73,7 +73,7 @@ function MsgExecuteFinal:DisconnectHandler(username)--断开连接时
 end 
 
 function MsgExecuteFinal:AnalysisMsg(msg)--解析一条消息  
-    local ret,msgtable = pcall(function (msg) return table.pack(string.unpack("<I4 I4 I4 I4 I4 s4",msg)) end,msg)  
+    local ret,msgtable = pcall(function (msg) return table.pack(string.unpack("<I4 i8 i4 i4 i4 s4",msg)) end,msg)  
     assert(ret,nil)  
     return msgtable
 end 

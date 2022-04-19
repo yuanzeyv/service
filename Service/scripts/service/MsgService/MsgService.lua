@@ -48,12 +48,15 @@ function MsgService:Server_SocketOpen(fd, msg)
 	self._loginCount = self._loginCount + 1 --连接数目+1
 	local _ = self._nodelay and socketdriver.nodelay(fd) --设置当前不时延 
 	self._connection[fd] = NetStatus.OPEN --设置当前网络为打开状态
+	
+	print("socket被打开".. fd )
 	self._mediatorObj:SocketOpenHandle(fd, msg)--处理连接
 end 
 --这个函数本身不可能被重入
 function MsgService:Server_SocketClose(fd)  --close  
 	if fd ~= self._socket then  
-		assert(self._connection[fd] == NetStatus.READY_CLOSE,"socket对象不存在") --当前连接状态必须是 准备关闭的时候才能进入
+		print("socket将关闭".. fd )
+		assert(self._connection[fd],"socket对象不存在" .. fd) --当前连接状态必须是 准备关闭的时候才能进入
 		self._loginCount = self._loginCount - 1--数目减一
 		self._connection[fd] = NetStatus.DISCONNECT --彻底关闭
 		self._mediatorObj:SocketCloseHandle(fd) --断开连接的回调
@@ -65,8 +68,7 @@ end
 function MsgService:Server_SocketError(fd, msg)--当程序收到错误的消息时。
 	if fd == self._socket then--如果当前为主socket的话
 		skynet.error("MsgService accept error:",msg) --仅仅发送一个打印
-	else 
-		skynet.error("GGAGAGAGAG,Server_SocketError")
+	else  
 		self:CloseClient(fd) --关闭当前的套接字
 		self._mediatorObj:SocketErrorHandle(fd, msg)--调用错误的函数
 	end
@@ -80,7 +82,7 @@ function MsgService:GetSocketHandleList()
     local serverList = {}   
 	serverList.more = 	 handler(self,self.Server_SocketDispatchMore) 
 	serverList.data = 	 handler(self,self.Server_SocketDispatchMsg)
-	serverList.open = 	 handler(self,self.Server_SocketOpen)--完成
+	serverList.open = 	 handler(self,self.Server_SocketOpen)--完成 
 	serverList.close =	 handler(self,self.Server_SocketClose)--
 	serverList.error =	 handler(self,self.Server_SocketError)  
 	serverList.warning = handler(self,self.Server_ClientWarning)
@@ -114,7 +116,8 @@ function MsgService:CloseClient(fd)--关闭一个客户端的网络连接
 	if  self._connection[fd] == NetStatus.DISCONNECT then --未连接的话 直接关闭
 		return 
 	end 
-	self._connection[fd] = NetStatus. READY_CLOSE
+	self._connection[fd] = NetStatus. READY_CLOSE 
+	socketdriver.shutdown(fd)--连接到达最大，关闭当前套接字 
 	socketdriver.close(fd) --直接关闭客户端 
 end
 
