@@ -13,12 +13,13 @@ end
 
 --角色登录系统
 function SystemModule:Command_EnterSystem(source,playHandle) 
-    if self:GetPlayer(playHandle) then --如果当前角色已经进入了系统的haunt
+    print("ABCASCASCASc")
+    if self:GetPlayer(playHandle) then --如果当前角色已经进入了系统的hua
         return G_ErrorConf.RepetSystem --重复登入
-    end
+    end 
+    self:EnterSystem(playHandle) --角色进入当前系统
     --角色记录当前系统
     skynet.call(playHandle,"lua","register_system",self._manager:GetSystemID(),skynet.self())
-    self:EnterSystem(playHandle) --角色进入当前系统
 end
      
 --角色离开系统

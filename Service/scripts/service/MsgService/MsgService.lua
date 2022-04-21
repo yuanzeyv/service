@@ -117,7 +117,7 @@ function MsgService:CloseClient(fd)--关闭一个客户端的网络连接
 		return 
 	end 
 	self._connection[fd] = NetStatus. READY_CLOSE 
-	socketdriver.shutdown(fd)--连接到达最大，关闭当前套接字 
+	--socketdriver.shutdown(fd)--连接到达最大，关闭当前套接字 
 	socketdriver.close(fd) --直接关闭客户端 
 end
 

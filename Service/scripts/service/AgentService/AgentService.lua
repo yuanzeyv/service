@@ -31,7 +31,9 @@ function AgentService:Command_Write(source,msgId,param1,param2,param3,param4,str
         skynet.error(source,"网络连接已断开,消息被截留")
         return 
     end 
-    skynet.error(string.format("(%d)Message => msgID:%-4d param1:%-4d param2:%-4d param3:%-4d param4:%-4d str:%s", skynet.self(),msgId,param1,param2,param3,param4,str == "" and "空" or str )) 
+    if msgId ~= 300 then
+        skynet.error(string.format("(%d)Message => msgID:%-4d param1:%-4d param2:%-4d param3:%-4d param4:%-4d str:%s", skynet.self(),msgId,param1,param2,param3,param4,str == "" and "空" or str ))
+    end 
     skynet.call(self._gate, "lua", "write",self._username,self:PackMsg(msgId,param1,param2,param3,param4,str))
 end
 
